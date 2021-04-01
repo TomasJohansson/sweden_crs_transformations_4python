@@ -16,31 +16,31 @@ class CrsProjectionTest(unittest.TestCase):
     totalNumberOfProjections = numberOfSweref99projections + numberOfRT90projections + numberOfWgs84Projections
 
     def setUp(self):
-        self._wgs84Projections = {CrsProjection.wgs84}
+        self._wgs84Projections = {CrsProjection.WGS84}
 
         self._sweref99Projections = {
-            CrsProjection.sweref_99_12_00, CrsProjection.sweref_99_13_30, CrsProjection.sweref_99_14_15,
-            CrsProjection.sweref_99_15_00, CrsProjection.sweref_99_15_45, CrsProjection.sweref_99_16_30,
-            CrsProjection.sweref_99_17_15, CrsProjection.sweref_99_18_00, CrsProjection.sweref_99_18_45,
-            CrsProjection.sweref_99_20_15, CrsProjection.sweref_99_21_45, CrsProjection.sweref_99_23_15,
-            CrsProjection.sweref_99_tm
+            CrsProjection.SWEREF_99_12_00, CrsProjection.SWEREF_99_13_30, CrsProjection.SWEREF_99_14_15,
+            CrsProjection.SWEREF_99_15_00, CrsProjection.SWEREF_99_15_45, CrsProjection.SWEREF_99_16_30,
+            CrsProjection.SWEREF_99_17_15, CrsProjection.SWEREF_99_18_00, CrsProjection.SWEREF_99_18_45,
+            CrsProjection.SWEREF_99_20_15, CrsProjection.SWEREF_99_21_45, CrsProjection.SWEREF_99_23_15,
+            CrsProjection.SWEREF_99_TM
         }
 
         self._rt90Projections = {
-            CrsProjection.rt90_0_0_gon_v, CrsProjection.rt90_2_5_gon_o, CrsProjection.rt90_2_5_gon_v,
-            CrsProjection.rt90_5_0_gon_o, CrsProjection.rt90_5_0_gon_v, CrsProjection.rt90_7_5_gon_v
+            CrsProjection.RT90_0_0_GON_V, CrsProjection.RT90_2_5_GON_O, CrsProjection.RT90_2_5_GON_V,
+            CrsProjection.RT90_5_0_GON_O, CrsProjection.RT90_5_0_GON_V, CrsProjection.RT90_7_5_GON_V
         }
 
 
     def test_getEpsgNumber(self):
         self.assertEqual(
             CrsProjectionTest.epsgNumberForSweref99tm,
-            CrsProjection.sweref_99_tm.getEpsgNumber()
+            CrsProjection.SWEREF_99_TM.getEpsgNumber()
         )
 
         self.assertEqual(
             CrsProjectionTest.epsgNumberForWgs84,
-            CrsProjection.wgs84.getEpsgNumber()
+            CrsProjection.WGS84.getEpsgNumber()
         )
 
 

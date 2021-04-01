@@ -40,7 +40,7 @@ class CrsProjection(enum.Enum):
     /// https://en.wikipedia.org/wiki/World_Geodetic_System#A_new_World_Geodetic_System:_WGS_84
     /// </summary>
     """
-    wgs84 = 4326
+    WGS84 = 4326
 
     """
     /// <summary>
@@ -51,29 +51,29 @@ class CrsProjection(enum.Enum):
     /// https://spatialreference.org/ref/epsg/3006/
     /// </summary>
     """
-    sweref_99_tm = 3006 # national sweref99 CRS
+    SWEREF_99_TM = 3006 # national sweref99 CRS
 
     """
     // local sweref99 systems (the new swedish national system):
     """
-    sweref_99_12_00 = 3007
-    sweref_99_13_30 = 3008
-    sweref_99_15_00 = 3009
-    sweref_99_16_30 = 3010
-    sweref_99_18_00 = 3011
-    sweref_99_14_15 = 3012
-    sweref_99_15_45 = 3013
-    sweref_99_17_15 = 3014
-    sweref_99_18_45 = 3015
-    sweref_99_20_15 = 3016
-    sweref_99_21_45 = 3017
-    sweref_99_23_15 = 3018
+    SWEREF_99_12_00 = 3007
+    SWEREF_99_13_30 = 3008
+    SWEREF_99_15_00 = 3009
+    SWEREF_99_16_30 = 3010
+    SWEREF_99_18_00 = 3011
+    SWEREF_99_14_15 = 3012
+    SWEREF_99_15_45 = 3013
+    SWEREF_99_17_15 = 3014
+    SWEREF_99_18_45 = 3015
+    SWEREF_99_20_15 = 3016
+    SWEREF_99_21_45 = 3017
+    SWEREF_99_23_15 = 3018
 
     """
     // local RT90 systems (the old swedish national system):
     """
-    rt90_7_5_gon_v = 3019
-    rt90_5_0_gon_v = 3020
+    RT90_7_5_GON_V = 3019
+    RT90_5_0_GON_V = 3020
 
     """
     /// <summary>
@@ -82,18 +82,18 @@ class CrsProjection(enum.Enum):
     /// https://spatialreference.org/ref/epsg/3021/
     /// </summary>
     """
-    rt90_2_5_gon_v = 3021
+    RT90_2_5_GON_V = 3021
 
-    rt90_0_0_gon_v = 3022
-    rt90_2_5_gon_o = 3023
-    rt90_5_0_gon_o = 3024
+    RT90_0_0_GON_V = 3022
+    RT90_2_5_GON_O = 3023
+    RT90_5_0_GON_O = 3024
 
     def getEpsgNumber(self) -> int:
         # // the EPSG numbers have been used as the values in this enum
         return self.value
 
     def isWgs84(self) -> bool:
-        return self.value == CrsProjection.wgs84.value
+        return self.value == CrsProjection.WGS84.value
 
     def isSweref(self) -> bool:
         epsgNumber: int = self.getEpsgNumber()
