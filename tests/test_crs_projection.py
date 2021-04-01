@@ -35,12 +35,12 @@ class CrsProjectionTest(unittest.TestCase):
     def test_getEpsgNumber(self):
         self.assertEqual(
             CrsProjectionTest.epsgNumberForSweref99tm,
-            CrsProjection.sweref_99_tm.GetEpsgNumber()
+            CrsProjection.sweref_99_tm.getEpsgNumber()
         )
 
         self.assertEqual(
             CrsProjectionTest.epsgNumberForWgs84,
-            CrsProjection.wgs84.GetEpsgNumber()
+            CrsProjection.wgs84.getEpsgNumber()
         )
 
 
@@ -51,13 +51,13 @@ class CrsProjectionTest(unittest.TestCase):
         )
 
         for crsProjection in self._wgs84Projections: #type: CrsProjection
-            self.assertTrue(crsProjection.IsWgs84())
+            self.assertTrue(crsProjection.isWgs84())
 
         for crsProjection in self._sweref99Projections: #type: CrsProjection
-            self.assertFalse(crsProjection.IsWgs84())
+            self.assertFalse(crsProjection.isWgs84())
 
         for crsProjection in self._rt90Projections: #type: CrsProjection
-            self.assertFalse(crsProjection.IsWgs84())
+            self.assertFalse(crsProjection.isWgs84())
 
 
     def test_isSweRef99(self):
@@ -67,13 +67,13 @@ class CrsProjectionTest(unittest.TestCase):
         )
 
         for crsProjection in self._wgs84Projections: #type: CrsProjection
-            self.assertFalse(crsProjection.IsSweref())
+            self.assertFalse(crsProjection.isSweref())
 
         for crsProjection in self._sweref99Projections: #type: CrsProjection
-            self.assertTrue(crsProjection.IsSweref())
+            self.assertTrue(crsProjection.isSweref())
 
         for crsProjection in self._rt90Projections: #type: CrsProjection
-            self.assertFalse(crsProjection.IsSweref())
+            self.assertFalse(crsProjection.isSweref())
 
 
     def test_isRT90(self):
@@ -83,13 +83,13 @@ class CrsProjectionTest(unittest.TestCase):
         )
 
         for crsProjection in self._wgs84Projections: #type: CrsProjection
-            self.assertFalse(crsProjection.IsRT90())
+            self.assertFalse(crsProjection.isRT90())
 
         for crsProjection in self._sweref99Projections: #type: CrsProjection
-            self.assertFalse(crsProjection.IsRT90())
+            self.assertFalse(crsProjection.isRT90())
 
         for crsProjection in self._rt90Projections: #type: CrsProjection
-            self.assertTrue(crsProjection.IsRT90())
+            self.assertTrue(crsProjection.isRT90())
 
     '''
     [Test]
