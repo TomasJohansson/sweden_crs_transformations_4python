@@ -1,10 +1,6 @@
 ﻿import unittest
 from sweden_crs_transformations.crs_projection import CrsProjection
 
-# the below imported file has been ported from C# extension methods to Python monkey patching
-import sweden_crs_transformations.crs_projection_extensions
-# TODO move the functions/methods in the above file directly into the Python 'class CrsProjection(enum.Enum)'
-
 # using SwedenCrsTransformations;
 # using System.Collections.Generic;
 # using static SwedenCrsTransformationsTests.CrsProjectionFactoryTest; // to be able to use constants such as epsgNumberForSweref99tm and epsgNumberForWgs84

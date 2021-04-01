@@ -87,3 +87,25 @@ class CrsProjection(enum.Enum):
             rt90_0_0_gon_v = 3022
             rt90_2_5_gon_o = 3023
             rt90_5_0_gon_o = 3024
+
+            def GetEpsgNumber(self) -> int :
+                # // the EPSG numbers have been used as the values in this enum
+                return self.value
+
+            def IsWgs84(self) -> bool :
+                return self.value == CrsProjection.wgs84.value
+
+            def IsSweref(self) -> bool :
+                epsgNumber: int = self.GetEpsgNumber()
+                return _EpsgConstant.epsgLowerValueForSweref <= epsgNumber and epsgNumber <= _EpsgConstant.epsgUpperValueForSweref
+
+            def IsRT90(self) -> bool :
+                epsgNumber: int = self.GetEpsgNumber()
+                return _EpsgConstant.epsgLowerValueForRT90 <= epsgNumber and epsgNumber <= _EpsgConstant.epsgUpperValueForRT90
+
+class _EpsgConstant:
+    epsgLowerValueForSweref = 3006
+    epsgUpperValueForSweref = 3018
+
+    epsgLowerValueForRT90 = 3019
+    epsgUpperValueForRT90 = 3024
