@@ -96,7 +96,7 @@ class CrsProjection(enum.Enum):
     def is_wgs84(self) -> bool:
         return self.value == CrsProjection.WGS84.value
 
-    def is_sweref(self) -> bool:
+    def is_sweref99(self) -> bool:
         epsgNumber: int = self.get_epsg_number()
         return _EpsgConstant._epsgLowerValueForSweref <= epsgNumber and epsgNumber <= _EpsgConstant._epsgUpperValueForSweref
 

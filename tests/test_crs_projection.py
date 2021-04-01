@@ -68,13 +68,13 @@ class CrsProjectionTest(unittest.TestCase):
         )
 
         for crsProjection in self._wgs84Projections: #type: CrsProjection
-            self.assertFalse(crsProjection.is_sweref())
+            self.assertFalse(crsProjection.is_sweref99())
 
         for crsProjection in self._sweref99Projections: #type: CrsProjection
-            self.assertTrue(crsProjection.is_sweref())
+            self.assertTrue(crsProjection.is_sweref99())
 
         for crsProjection in self._rt90Projections: #type: CrsProjection
-            self.assertFalse(crsProjection.is_sweref())
+            self.assertFalse(crsProjection.is_sweref99())
 
 
     def test_is_rt90(self):
