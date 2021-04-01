@@ -77,7 +77,7 @@ class CrsProjectionTest(unittest.TestCase):
 
 
     def test_isRT90(self):
-        self.assertEquals(
+        self.assertEqual(
             CrsProjectionTest.numberOfRT90projections,
             len(self._rt90Projections)
         )
