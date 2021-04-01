@@ -98,11 +98,11 @@ class CrsProjection(enum.Enum):
 
     def is_sweref99(self) -> bool:
         epsgNumber: int = self.get_epsg_number()
-        return _EpsgConstant._epsgLowerValueForSweref <= epsgNumber and epsgNumber <= _EpsgConstant._epsgUpperValueForSweref
+        return _EpsgConstant._epsgLowerValueForSweref <= epsgNumber <= _EpsgConstant._epsgUpperValueForSweref
 
     def is_rt90(self) -> bool:
         epsgNumber: int = self.get_epsg_number()
-        return _EpsgConstant._epsgLowerValueForRT90 <= epsgNumber and epsgNumber <= _EpsgConstant._epsgUpperValueForRT90
+        return _EpsgConstant._epsgLowerValueForRT90 <= epsgNumber <= _EpsgConstant._epsgUpperValueForRT90
 
 
 # The class below is only intended for internal usage i.e. only used by the above class CrsProjection
