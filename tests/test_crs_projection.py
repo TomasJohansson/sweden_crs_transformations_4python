@@ -6,6 +6,7 @@ from sweden_crs_transformations.crs_projection import CrsProjection
 # using static SwedenCrsTransformationsTests.CrsProjectionFactoryTest; // to be able to use constants such as epsgNumberForSweref99tm and epsgNumberForWgs84
 # using static SwedenCrsTransformations.CrsProjection;
 
+
 class CrsProjectionTest(unittest.TestCase):
     # TODO maybe define these below constants instead in 'CrsProjectionFactoryTest' as in C#.NET library being ported to this Python library
     epsgNumberForWgs84: int = 4326
@@ -32,64 +33,64 @@ class CrsProjectionTest(unittest.TestCase):
         }
 
 
-    def test_getEpsgNumber(self):
+    def test_get_epsg_number(self):
         self.assertEqual(
             CrsProjectionTest.epsgNumberForSweref99tm,
-            CrsProjection.SWEREF_99_TM.getEpsgNumber()
+            CrsProjection.SWEREF_99_TM.get_epsg_number()
         )
 
         self.assertEqual(
             CrsProjectionTest.epsgNumberForWgs84,
-            CrsProjection.WGS84.getEpsgNumber()
+            CrsProjection.WGS84.get_epsg_number()
         )
 
 
-    def test_isWgs84(self):
+    def test_is_wgs84(self):
         self.assertEquals(
             CrsProjectionTest.numberOfWgs84Projections,
             len(self._wgs84Projections)
         )
 
         for crsProjection in self._wgs84Projections: #type: CrsProjection
-            self.assertTrue(crsProjection.isWgs84())
+            self.assertTrue(crsProjection.is_wgs84())
 
         for crsProjection in self._sweref99Projections: #type: CrsProjection
-            self.assertFalse(crsProjection.isWgs84())
+            self.assertFalse(crsProjection.is_wgs84())
 
         for crsProjection in self._rt90Projections: #type: CrsProjection
-            self.assertFalse(crsProjection.isWgs84())
+            self.assertFalse(crsProjection.is_wgs84())
 
 
-    def test_isSweRef99(self):
+    def test_is_sweref99(self):
         self.assertEquals(
             CrsProjectionTest.numberOfSweref99projections,
             len(self._sweref99Projections)
         )
 
         for crsProjection in self._wgs84Projections: #type: CrsProjection
-            self.assertFalse(crsProjection.isSweref())
+            self.assertFalse(crsProjection.is_sweref())
 
         for crsProjection in self._sweref99Projections: #type: CrsProjection
-            self.assertTrue(crsProjection.isSweref())
+            self.assertTrue(crsProjection.is_sweref())
 
         for crsProjection in self._rt90Projections: #type: CrsProjection
-            self.assertFalse(crsProjection.isSweref())
+            self.assertFalse(crsProjection.is_sweref())
 
 
-    def test_isRT90(self):
+    def test_is_rt90(self):
         self.assertEqual(
             CrsProjectionTest.numberOfRT90projections,
             len(self._rt90Projections)
         )
 
         for crsProjection in self._wgs84Projections: #type: CrsProjection
-            self.assertFalse(crsProjection.isRT90())
+            self.assertFalse(crsProjection.is_rt90())
 
         for crsProjection in self._sweref99Projections: #type: CrsProjection
-            self.assertFalse(crsProjection.isRT90())
+            self.assertFalse(crsProjection.is_rt90())
 
         for crsProjection in self._rt90Projections: #type: CrsProjection
-            self.assertTrue(crsProjection.isRT90())
+            self.assertTrue(crsProjection.is_rt90())
 
     '''
     [Test]
