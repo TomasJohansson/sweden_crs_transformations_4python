@@ -92,6 +92,28 @@ class CrsProjectionTest(unittest.TestCase):
         for crsProjection in self._rt90Projections: #type: CrsProjection
             self.assertTrue(crsProjection.is_rt90())
 
+    def test_string(self):
+        self.assertEqual(
+            "WGS84(EPSG:4326)",
+            str(CrsProjection.WGS84)
+        )
+
+        self.assertEqual(
+            "SWEREF_99_TM(EPSG:3006)",
+            str(CrsProjection.SWEREF_99_TM)
+        );
+
+        self.assertEqual(
+            "SWEREF_99_14_15(EPSG:3012)",
+            str(CrsProjection.SWEREF_99_14_15)
+        )
+
+        self.assertEqual(
+            "RT90_0_0_GON_V(EPSG:3022)",
+            str(CrsProjection.RT90_0_0_GON_V)
+        )
+
+
     '''
     [Test]
     public void CreateCoordinate() {

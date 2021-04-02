@@ -164,7 +164,7 @@ class CrsCoordinate:
         /// </summary>
         """
         def __str__(self):
-            crs: str = str(self.get_crs_projection().name).upper()
+            crs: str = str(self.get_crs_projection()).upper()
             isWgs84: bool = self.get_crs_projection().is_wgs84()
             yOrLatitude: str = "Y"
             xOrLongitude: str = "X"

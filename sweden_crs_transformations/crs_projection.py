@@ -104,6 +104,9 @@ class CrsProjection(enum.Enum):
         epsgNumber: int = self.get_epsg_number()
         return _EpsgConstant._epsgLowerValueForRT90 <= epsgNumber <= _EpsgConstant._epsgUpperValueForRT90
 
+    def __str__(self):
+        return f"{self.name}(EPSG:{self.get_epsg_number()})"
+
 
 # The class below is only intended for internal usage i.e. only used by the above class CrsProjection
 class _EpsgConstant:
@@ -111,3 +114,4 @@ class _EpsgConstant:
     _epsgUpperValueForSweref = 3018
     _epsgLowerValueForRT90 = 3019
     _epsgUpperValueForRT90 = 3024
+
