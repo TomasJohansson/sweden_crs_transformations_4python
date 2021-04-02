@@ -10,17 +10,21 @@
 * https://github.com/TomasJohansson/sweden_crs_transformations_4net
 */
 """
+from sweden_crs_transformations.crs_coordinate import CrsCoordinate
 from sweden_crs_transformations.crs_projection import CrsProjection
+from sweden_crs_transformations.mighty_little_geodesy._gauss_kreuger import _GaussKreuger
+from sweden_crs_transformations.mighty_little_geodesy._gauss_kreuger_parameter_object import _GaussKreugerParameterObject
+from sweden_crs_transformations.mighty_little_geodesy._lat_lon import _LatLon
 from sweden_crs_transformations.transformation.transform_strategy import _TransformStrategy
 
 class TransformStrategy_from_WGS84_to_SWEREF99_or_RT90(_TransformStrategy):
     # Precondition: sourceCoordinate must be CRS WGS84
-    def transform(
-        # CrsCoordinate sourceCoordinate,
+    def transform(self,
+        sourceCoordinate: CrsCoordinate,
         targetCrsProjection: CrsProjection
-    #) -> CrsCoordinate:
-    ):
-        pass
-        # var gkProjection = GaussKreugerFactory.getInstance().getGaussKreuger(targetCrsProjection);
-        # LatLon latLon = gkProjection.geodetic_to_grid(sourceCoordinate.LatitudeY, sourceCoordinate.LongitudeX);
-        # return CrsCoordinate.CreateCoordinate(targetCrsProjection, latLon.LatitudeY, latLon.LongitudeX);
+    ) -> CrsCoordinate:
+        sourceCoordinateProjection = sourceCoordinate.get_crs_projection()
+        gaussKreugerParameterObject = _GaussKreugerParameterObject(sourceCoordinateProjection)
+        gaussKreuger = _GaussKreuger(gaussKreugerParameterObject)
+        latLon: _LatLon = gaussKreuger.geodetic_to_grid(sourceCoordinate.get_latitude_y(), sourceCoordinate.get_longitude_x())
+        return CrsCoordinate.create_coordinate(targetCrsProjection, latLon.latitudeY, latLon.longitudeX)
