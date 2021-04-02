@@ -45,7 +45,7 @@ class CrsProjectionFactory:
     /// See also <see cref="CrsProjection"/>
     """
     @staticmethod
-    def GetCrsProjectionByEpsgNumber(epsg: int) -> CrsProjection:
+    def get_crs_projection_by_epsg_number(epsg: int) -> CrsProjection:
         # TODO implement with a hashmap maybe ...
         for crs in CrsProjection:
             if crs.value == epsg:
@@ -58,7 +58,7 @@ class CrsProjectionFactory:
     /// </summary>
     """
     @staticmethod
-    def GetAllCrsProjections() -> list[CrsProjection]:
+    def get_all_crs_projections() -> list[CrsProjection]:
         crsProjections = []
         for crs in CrsProjection:
             crsProjections.append(crs)
