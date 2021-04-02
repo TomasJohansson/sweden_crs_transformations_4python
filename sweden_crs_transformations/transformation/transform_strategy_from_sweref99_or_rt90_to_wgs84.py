@@ -19,15 +19,21 @@ from sweden_crs_transformations.transformation.transform_strategy import _Transf
 
 
 class TransformStrategy_from_SWEREF99_or_RT90_to_WGS84(_TransformStrategy):
-    # Precondition: sourceCoordinate must be CRS SWEREF99 or RT90
+    # Precondition: sourceCoordinate must be CRS SWEREF99 or RT90 , and the target must be WGS84
     def transform(self,
         sourceCoordinate: CrsCoordinate,
         targetCrsProjection: CrsProjection
     ) -> CrsCoordinate:
         sourceCoordinateProjection = sourceCoordinate.get_crs_projection()
+        if(not(
+            (sourceCoordinateProjection.is_sweref99() or sourceCoordinateProjection.is_rt90())
+            and
+            targetCrsProjection.is_wgs84()
+        )):
+            from sweden_crs_transformations.transformation.transformer import Transformer
+            Transformer._throwExceptionMessage(sourceCoordinate.get_crs_projection(), targetCrsProjection)
+
         gaussKreugerParameterObject = _GaussKreugerParameterObject(sourceCoordinateProjection)
         gaussKreuger = _GaussKreuger(gaussKreugerParameterObject)
         latLon: _LatLon = gaussKreuger.grid_to_geodetic(sourceCoordinate.get_latitude_y(), sourceCoordinate.get_longitude_x())
         return CrsCoordinate.create_coordinate(targetCrsProjection, latLon.latitudeY, latLon.longitudeX)
-
-

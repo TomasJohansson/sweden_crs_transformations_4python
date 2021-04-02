@@ -118,7 +118,7 @@ class CrsCoordinate:
         yLatitude: float,
         xLongitude: float
     ) -> CrsCoordinate:
-        return CrsCoordinate(crsProjection, yLatitude, xLongitude)
+        return cls(crsProjection, yLatitude, xLongitude)
 
     """
     # // ----------------------------------------------------------------------------------------------------------------------

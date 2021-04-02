@@ -35,14 +35,14 @@ class Transformer:
 
     @staticmethod
     def transform(sourceCoordinate: CrsCoordinate, targetCrsProjection: CrsProjection) -> CrsCoordinate:
-        if(sourceCoordinate.CrsProjection == targetCrsProjection):
+        if(sourceCoordinate.get_crs_projection() == targetCrsProjection):
             return sourceCoordinate
 
         _transFormStrategy: _TransformStrategy = None
 
         # Transform FROM wgs84:
         if(
-            sourceCoordinate.CrsProjection.is_wgs84()
+            sourceCoordinate.get_crs_projection().is_wgs84()
             and
             ( targetCrsProjection.is_sweref99() or targetCrsProjection.is_rt90() )
         ):
@@ -65,7 +65,7 @@ class Transformer:
             # the only direct transform supported is to/from WGS84, so therefore first transform to wgs84
             _transFormStrategy = Transformer.transFormStrategy_From_Sweref99OrRT90_to_WGS84_andThenToRealTarget
 
-        Transformer._transform_with_explicit_strategy(_transFormStrategy, sourceCoordinate, targetCrsProjection)
+        return Transformer._transform_with_explicit_strategy(_transFormStrategy, sourceCoordinate, targetCrsProjection)
 
 
     # this method is not intended for public usage
@@ -75,9 +75,15 @@ class Transformer:
         sourceCoordinate: CrsCoordinate,
         targetCrsProjection: CrsProjection
     ) -> CrsCoordinate:
-
         if(_transFormStrategy is None):
+            Transformer._throwExceptionMessage(sourceCoordinate.get_crs_projection(), targetCrsProjection)
+        else:
             return _transFormStrategy.transform(sourceCoordinate, targetCrsProjection)
 
-        sourceProjection: CrsProjection = sourceCoordinate.get_crs_projection()
+
+    @staticmethod
+    def _throwExceptionMessage(
+        sourceProjection: CrsCoordinate,
+        targetCrsProjection: CrsCoordinate,
+    ):
         raise ValueError(f"Unhandled source/target projection transformation: {sourceProjection} ==> {targetCrsProjection}")

@@ -18,7 +18,6 @@ class CrsCoordinateTest(unittest.TestCase):
     stockholmCentralStation_SWEREF99TM_easting = 674032
 
     def test_transform(self):
-        """
         stockholmWGS84: CrsCoordinate = CrsCoordinate.create_coordinate(
             CrsProjection.WGS84,
             CrsCoordinateTest.stockholmCentralStation_WGS84_latitude,
@@ -29,63 +28,64 @@ class CrsCoordinateTest(unittest.TestCase):
             CrsCoordinateTest.stockholmCentralStation_SWEREF99TM_northing,
             CrsCoordinateTest.stockholmCentralStation_SWEREF99TM_easting
         )
+
         stockholmRT90: CrsCoordinate = CrsCoordinate.create_coordinate(
             CrsProjection.RT90_2_5_GON_V,
             CrsCoordinateTest.stockholmCentralStation_RT90_northing,
             CrsCoordinateTest.stockholmCentralStation_RT90_easting
         )
+        self.assertIsNotNone(stockholmWGS84)
+        self.assertIsNotNone(stockholmSWEREF99TM)
+        self.assertIsNotNone(stockholmRT90)
 
         # Transformations to WGS84 (from SWEREF99TM and RT90):
-        self.assertEqual(
+        self.assertEqualCoordinate(
             stockholmWGS84,  # expected WGS84
             stockholmSWEREF99TM.transform(CrsProjection.WGS84)  # actual/transformed WGS84
         )
 
-        self.assertEqual(
+        self.assertEqualCoordinate(
             stockholmWGS84,  # expected WGS84
-            stockholmRT90.transform(CrsProjection.wgs84)  # actual/transformed WGS84
+            stockholmRT90.transform(CrsProjection.WGS84)  # actual/transformed WGS84
         )
+
         # below is a similar test as one of the above tests but using the overloaded Transform method
         # which takes an integer as parameter instead of an instance of the enum CrsProjection
         epsgNumberForWgs84: int = CrsProjection.WGS84.get_epsg_number()
-        self.assertEqual(
+        self.assertEqualCoordinate(
             stockholmWGS84,
             stockholmRT90.transform_by_epsg_number(epsgNumberForWgs84)  # testing the overloaded Transform method with an integer parameter
         )
 
-
         # Transformations to SWEREF99TM (from WGS84 and RT90):
-        self.assertEqual(
+        self.assertEqualCoordinate(
             stockholmSWEREF99TM,  # expected SWEREF99TM
             stockholmWGS84.transform(CrsProjection.SWEREF_99_TM)  # actual/transformed SWEREF99TM
         )
 
-        self.assertEqual(
+        self.assertEqualCoordinate(
             stockholmSWEREF99TM,  # expected SWEREF99TM
             stockholmRT90.transform(CrsProjection.SWEREF_99_TM)  # actual/transformed SWEREF99TM
         )
 
 
         # Transformations to RT90 (from WGS84 and SWEREF99TM):
-        self.assertEqual(
+        self.assertEqualCoordinate(
             stockholmRT90,  # expected RT90
             stockholmWGS84.transform(CrsProjection.RT90_2_5_GON_V)  # actual/transformed RT90
         )
 
-        self.assertEqual(
+        self.assertEqualCoordinate(
             stockholmRT90,  # expected RT90
             stockholmSWEREF99TM.transform(CrsProjection.RT90_2_5_GON_V)  # actual/transformed RT90
         )
-        """
 
     def assertEqualCoordinate(self, crsCoordinate_1: CrsCoordinate, crsCoordinate_2: CrsCoordinate) :
         messageToDisplayIfAssertionFails = f"crsCoordinate_1: {crsCoordinate_1}  , crsCoordinate_2 : {crsCoordinate_2}"
         self.assertEqual(crsCoordinate_1.get_crs_projection(), crsCoordinate_2.get_crs_projection(), messageToDisplayIfAssertionFails)
         maxDifference = 0.000007 if crsCoordinate_1.get_crs_projection().is_wgs84() else 0.5  # the other (i.e. non-WGS84) value is using meter as unit, so 0.5 is just five decimeters difference
-        diffLongitude = abs((crsCoordinate_1.get_longitude_x() - crsCoordinate_2.get_longitude_x()))
-        diffLatitude = abs((crsCoordinate_1.get_latitude_y() - crsCoordinate_2.get_latitude_y()))
-        self.assertTrue(diffLongitude < maxDifference, messageToDisplayIfAssertionFails)
-        self.assertTrue(diffLatitude < maxDifference, messageToDisplayIfAssertionFails)
+        self.assertAlmostEqual(crsCoordinate_1.get_longitude_x(), crsCoordinate_2.get_longitude_x(), msg=messageToDisplayIfAssertionFails, delta=maxDifference)
+        self.assertAlmostEqual(crsCoordinate_1.get_latitude_y(), crsCoordinate_2.get_latitude_y(), msg=messageToDisplayIfAssertionFails, delta=maxDifference)
 
 
     def test_create_coordinate_by_epsg_number(self):
