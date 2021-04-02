@@ -1,74 +1,68 @@
-﻿using NUnit.Framework;
-using SwedenCrsTransformations;
-using System.Collections.Generic;
-using System.Linq;
+﻿import unittest
+from sweden_crs_transformations.crs_projection import CrsProjection
+from sweden_crs_transformations.crs_projection_factory import CrsProjectionFactory
+from typing import Iterator
 
-namespace SwedenCrsTransformationsTests
-{
-    [TestFixture]
-    public class CrsProjectionFactoryTest {
+class CrsProjectionFactoryTest(unittest.TestCase):
+        epsgNumberForWgs84 = 4326
+        epsgNumberForSweref99tm = 3006 # https://epsg.org/crs_3006/SWEREF99-TM.html
+        numberOfSweref99projections = 13 #  with EPSG numbers 3006-3018
+        numberOfRT90projections = 6 # with EPSG numbers 3019-3024
+        numberOfWgs84Projections = 1 # just to provide semantic instead of using a magic number 1 below
+        totalNumberOfProjections = numberOfSweref99projections + numberOfRT90projections + numberOfWgs84Projections
 
-        internal const int epsgNumberForWgs84 = 4326;
-        internal const int epsgNumberForSweref99tm = 3006; // https://epsg.org/crs_3006/SWEREF99-TM.html
-        internal const int numberOfSweref99projections = 13; // with EPSG numbers 3006-3018
-        internal const int numberOfRT90projections = 6; // with EPSG numbers 3019-3024
-        internal const int numberOfWgs84Projections = 1; // just to provide semantic instead of using a magic number 1 below
-        private const int totalNumberOfProjections = numberOfSweref99projections + numberOfRT90projections + numberOfWgs84Projections;
-
-        private IList<CrsProjection> _allCrsProjections;
-
-        [SetUp]
-        public void SetUp() {
-            _allCrsProjections = CrsProjectionFactory.GetAllCrsProjections();;
-        }
+        def setUp(self):
+            self._allCrsProjections: list[CrsProjection] = CrsProjectionFactory.GetAllCrsProjections()
 
 
-        [Test]
-        public void GetCrsProjectionByEpsgNumber() {
-            Assert.AreEqual(
-                CrsProjection.sweref_99_tm,
-                CrsProjectionFactory.GetCrsProjectionByEpsgNumber(epsgNumberForSweref99tm)
-            );
+        def test_GetCrsProjectionByEpsgNumber(self):
+            self.assertEqual(
+                CrsProjection.SWEREF_99_TM,
+                CrsProjectionFactory.GetCrsProjectionByEpsgNumber(CrsProjectionFactoryTest.epsgNumberForSweref99tm)
+            )
 
-            Assert.AreEqual(
-                CrsProjection.sweref_99_23_15,
-                CrsProjectionFactory.GetCrsProjectionByEpsgNumber(3018) // https://epsg.io/3018
-            );
+            self.assertEqual(
+                CrsProjection.SWEREF_99_23_15,
+                CrsProjectionFactory.GetCrsProjectionByEpsgNumber(3018) # https://epsg.io/3018
+            )
 
-            Assert.AreEqual(
-                CrsProjection.rt90_5_0_gon_o,
-                CrsProjectionFactory.GetCrsProjectionByEpsgNumber(3024)  // https://epsg.io/3018
-            );
-        }
+            self.assertEqual(
+                CrsProjection.RT90_5_0_GON_O,
+                CrsProjectionFactory.GetCrsProjectionByEpsgNumber(3024)  # https://epsg.io/3018
+            )
 
-        [Test]
-        public void VerifyTotalNumberOfProjections() {
-            Assert.AreEqual(
-                totalNumberOfProjections,
-                _allCrsProjections.Count // retrieved with 'GetAllCrsProjections' in the SetUp method
-            );
-        }    
-        [Test]
-        public void VerifyNumberOfWgs84Projections() {
-            Assert.AreEqual(numberOfWgs84Projections, _allCrsProjections.Where(crs => crs.IsWgs84()).Count());
-        }
-        [Test]
-        public void VerifyNumberOfSweref99Projections() {
-            Assert.AreEqual(numberOfSweref99projections, _allCrsProjections.Where(crs => crs.IsSweref()).Count());
-        }
-        [Test]
-        public void VerifyNumberOfRT90Projections() {
-            Assert.AreEqual(numberOfRT90projections, _allCrsProjections.Where(crs => crs.IsRT90()).Count());
-        }
 
-        [Test]
+        def test_VerifyTotalNumberOfProjections(self):
+            self.assertEqual(
+                CrsProjectionFactoryTest.totalNumberOfProjections,
+                len(self._allCrsProjections) # retrieved with 'GetAllCrsProjections' in the SetUp method
+            )
 
-        public void VerifyThatAllProjectionsCanBeRetrievedByItsEpsgNumber() {
-            foreach(var crsProjection in _allCrsProjections) {
-                var crsProj = CrsProjectionFactory.GetCrsProjectionByEpsgNumber(crsProjection.GetEpsgNumber());
-                Assert.AreEqual(crsProjection, crsProj);
-            }
-        }    
+        def getNumberOfProjections(self, mylambda):
+            res: Iterator = filter(mylambda, self._allCrsProjections)
+            lis = list(res)
+            return len(lis)
 
-    }
-}
+        def test_VerifyNumberOfWgs84Projections(self):
+            self.assertEqual(
+                CrsProjectionFactoryTest.numberOfWgs84Projections,
+            self.getNumberOfProjections(lambda crs: crs.is_wgs84())
+            )
+
+
+        def test_VerifyNumberOfSweref99Projections(self):
+            self.assertEqual(
+                CrsProjectionFactoryTest.numberOfSweref99projections,
+                self.getNumberOfProjections(lambda crs: crs.is_sweref99())
+            )
+
+        def test_VerifyNumberOfRT90Projections(self):
+            self.assertEqual(
+                CrsProjectionFactoryTest.numberOfRT90projections,
+                self.getNumberOfProjections(lambda crs: crs.is_rt90())
+            )
+
+        def test_VerifyThatAllProjectionsCanBeRetrievedByItsEpsgNumber(self):
+            for crsProjection in self._allCrsProjections:
+                crsProj: CrsProjection = CrsProjectionFactory.GetCrsProjectionByEpsgNumber(crsProjection.get_epsg_number())
+                self.assertEqual(crsProjection, crsProj)
