@@ -6,5 +6,5 @@ class LatLonTest(unittest.TestCase):
 
     def test_latLon(self):
         latLon = _LatLon(12.34, 56.78)
-        self.assertEquals(latLon.latitudeY, 12.34)
+        self.assertEqual(latLon.latitudeY, 12.34)
         self.assertEqual(latLon.longitudeX, 56.78)

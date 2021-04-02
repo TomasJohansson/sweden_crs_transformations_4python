@@ -46,7 +46,7 @@ class CrsProjectionTest(unittest.TestCase):
 
 
     def test_is_wgs84(self):
-        self.assertEquals(
+        self.assertEqual(
             CrsProjectionTest.numberOfWgs84Projections,
             len(self._wgs84Projections)
         )
@@ -62,7 +62,7 @@ class CrsProjectionTest(unittest.TestCase):
 
 
     def test_is_sweref99(self):
-        self.assertEquals(
+        self.assertEqual(
             CrsProjectionTest.numberOfSweref99projections,
             len(self._sweref99Projections)
         )
