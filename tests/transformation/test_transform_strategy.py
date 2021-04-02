@@ -1,26 +1,25 @@
-package com.programmerare.sweden_crs_transformations_4jvm.transformation;
+import unittest
+from sweden_crs_transformations.crs_projection import CrsProjection
 
-import com.programmerare.sweden_crs_transformations_4jvm.CrsCoordinate;
-import com.programmerare.sweden_crs_transformations_4jvm.CrsProjection;
-import org.junit.*;
-import org.junit.function.ThrowingRunnable;
 
-public class TransformStrategyTest  {
-    
-    private CrsCoordinate coordinateWgs84, coordinateSweref99, coordinateRT90;
-    
-    @Before
-    public void setUp() throws Exception {
-        coordinateWgs84 = CrsProjection.WGS84.createCoordinate(60.0, 20.0);
-        coordinateSweref99 = CrsProjection.SWEREF_99_TM.createCoordinate(6484098.0, 333538.0);
-        coordinateRT90 = CrsProjection.RT90_2_5_GON_V.createCoordinate(6797357.0, 1500627.0);
-    }
+class TransformStrategyTest(unittest.TestCase):
 
-    private void assertIllegalArgumentException(
-        final TransformStrategy transformStrategy,
-        final CrsCoordinate sourceCoordinate,
-        final CrsProjection targetProjection
-    ) {
+    # private CrsCoordinate coordinateWgs84, coordinateSweref99, coordinateRT90;
+
+    def setUp(self):
+        pass
+        # self.coordinateWgs84 = CrsProjection.WGS84.createCoordinate(60.0, 20.0)
+        # self.coordinateSweref99 = CrsProjection.SWEREF_99_TM.createCoordinate(6484098.0, 333538.0)
+        # self.coordinateRT90 = CrsProjection.RT90_2_5_GON_V.createCoordinate(6797357.0, 1500627.0)
+
+
+    def _assertIllegalArgumentException(
+        # transformStrategy: TransformStrategy,
+        # sourceCoordinate: CrsCoordinate,
+        targetProjection: CrsProjection
+    ):
+        pass
+        """
         Assert.assertThrows(
             IllegalArgumentException.class,
             new ThrowingRunnable() {
@@ -29,14 +28,15 @@ public class TransformStrategyTest  {
                     transformStrategy.transform(sourceCoordinate, targetProjection);
                 }
             }
-        );        
-    }
-    
-    @Test
-    public void assertException__ForStrategy__From_Sweref99OrRT90__to_Sweref99OrRT90() {
+        )
+        """
+
+    def test_assertException__ForStrategy__From_Sweref99OrRT90__to_Sweref99OrRT90(self):
+        pass
+        """
         final TransformStrategy transformStrategy_From_Sweref99OrRT90__to_Sweref99OrRT90 =
             TransFormStrategy_From_Sweref99orRT90_to_WGS84_andThenToSweref99orRT90_asFinalTarget.getInstance();
-        
+
         assertIllegalArgumentException(
             transformStrategy_From_Sweref99OrRT90__to_Sweref99OrRT90,
             this.coordinateSweref99,
@@ -48,10 +48,11 @@ public class TransformStrategyTest  {
             this.coordinateWgs84,
             this.coordinateSweref99.getCrsProjection()
         );
-    }
+        """
 
-    @Test
-    public void assertException__ForStrategy__From_SWEREF99_or_RT90_to_WGS84() {
+    def test_assertException__ForStrategy__From_SWEREF99_or_RT90_to_WGS84(self):
+        pass
+        """
         final TransformStrategy transformStrategy_From_SWEREF99_or_RT90_to_WGS84 =
             TransformStrategy_from_SWEREF99_or_RT90_to_WGS84.getInstance();
 
@@ -66,11 +67,13 @@ public class TransformStrategyTest  {
             this.coordinateWgs84,
             this.coordinateSweref99.getCrsProjection()
         );
-    }
+        """
 
 
-    @Test
-    public void assertException__ForStrategy__From_WGS84_to_SWEREF99_or_RT90() {
+
+    def test_assertException__ForStrategy__From_WGS84_to_SWEREF99_or_RT90(self):
+        pass
+        """
         final TransformStrategy transformStrategy_From_WGS84_to_SWEREF99_or_RT90 =
             TransformStrategy_from_WGS84_to_SWEREF99_or_RT90.getInstance();
 
@@ -85,6 +88,4 @@ public class TransformStrategyTest  {
             this.coordinateSweref99,
             this.coordinateWgs84.getCrsProjection()
         );
-    }
-    
-}
+        """
