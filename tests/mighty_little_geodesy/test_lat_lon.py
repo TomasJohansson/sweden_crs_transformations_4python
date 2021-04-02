@@ -1,15 +1,10 @@
-﻿using NUnit.Framework;
+﻿import unittest
+from sweden_crs_transformations.mighty_little_geodesy._lat_lon import _LatLon
 
-namespace MightyLittleGeodesy {
-    [TestFixture]
-    public class LatLonTest {
-        private const double delta = 0.00000000000000000001;
-    
-        [Test]
-        public void latLon() {
-            LatLon latLon = new LatLon(12.34, 56.78);
-            Assert.AreEqual(latLon.LatitudeY, 12.34, delta);
-            Assert.AreEqual(latLon.LongitudeX, 56.78, delta);        
-        }
-    }
-}
+
+class LatLonTest(unittest.TestCase):
+
+    def test_latLon(self):
+        latLon = _LatLon(12.34, 56.78)
+        self.assertEquals(latLon.latitudeY, 12.34)
+        self.assertEqual(latLon.longitudeX, 56.78)
