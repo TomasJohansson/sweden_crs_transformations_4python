@@ -169,9 +169,9 @@ class _GaussKreuger:
     # // Conversion from grid coordinates to geodetic coordinates.
 
     def grid_to_geodetic(self, yLatitude: float, xLongitude: float) -> _LatLon:
-        lat_lon = [0, 0]
+        lat_lon = [0.0, 0.0]
         if (self.central_meridian == sys.float_info.min): # Double.MIN_VALUE
-            return lat_lon
+            return _LatLon(lat_lon[0], lat_lon[1])
         # // Prepare ellipsoid-based stuff.
         e2: float = self.flattening * (2.0 - self.flattening)
         n: float = self.flattening / (2.0 - self.flattening)

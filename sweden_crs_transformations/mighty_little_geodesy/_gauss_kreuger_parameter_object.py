@@ -88,7 +88,7 @@ class _GaussKreugerParameterObject:
             self._central_meridian = 15.75
         elif (projection == CrsProjection.SWEREF_99_17_15):
             self._sweref99_params()
-            self.central_meridian = 17.25
+            self._central_meridian = 17.25
         elif (projection == CrsProjection.SWEREF_99_18_45):
             self._sweref99_params()
             self._central_meridian = 18.75
