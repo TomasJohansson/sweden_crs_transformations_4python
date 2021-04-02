@@ -11,7 +11,6 @@
 */
 """
 from sweden_crs_transformations.crs_projection import CrsProjection
-
 """
     /// <summary>
     /// Class with methods for getting all projections, and for getting one projection by its EPSG number.
@@ -19,46 +18,48 @@ from sweden_crs_transformations.crs_projection import CrsProjection
     /// </summary>
     /// See also <see cref="CrsProjection"/>
 """
+
+
 class CrsProjectionFactory:
 
-        """
-        private readonly static IDictionary<int, CrsProjection>
-            mapWithAllCrsProjections = new Dictionary<int, CrsProjection>();
-        static CrsProjectionFactory() {
-            IList<CrsProjection> crsProjections = GetAllCrsProjections();
-            foreach(CrsProjection crsProjection in crsProjections) {
-                mapWithAllCrsProjections.Add(crsProjection.GetEpsgNumber(), crsProjection);
-        """
+    """
+    private readonly static IDictionary<int, CrsProjection>
+        mapWithAllCrsProjections = new Dictionary<int, CrsProjection>();
+    static CrsProjectionFactory() {
+        IList<CrsProjection> crsProjections = GetAllCrsProjections();
+        foreach(CrsProjection crsProjection in crsProjections) {
+            mapWithAllCrsProjections.Add(crsProjection.GetEpsgNumber(), crsProjection);
+    """
 
 
-        """
-        /// <summary>
-        /// Factory method creating an enum 'CrsProjection' by its number (EPSG) value.
-        /// </summary>
-        /// <param name="epsg">
-        /// An EPSG number.
-        /// https://en.wikipedia.org/wiki/EPSG_Geodetic_Parameter_Dataset
-        /// https://epsg.org
-        /// https://epsg.io
-        /// </param>
-        /// See also <see cref="CrsProjection"/>
-        """
-        @staticmethod
-        def GetCrsProjectionByEpsgNumber(epsg: int) -> CrsProjection:
-            # TODO implement with a hashmap maybe ...
-            for crs in CrsProjection:
-                if crs.value == epsg:
-                    return crs
-            raise ValueError(f"Could not find CrsProjection for EPSG {epsg}")
+    """
+    /// <summary>
+    /// Factory method creating an enum 'CrsProjection' by its number (EPSG) value.
+    /// </summary>
+    /// <param name="epsg">
+    /// An EPSG number.
+    /// https://en.wikipedia.org/wiki/EPSG_Geodetic_Parameter_Dataset
+    /// https://epsg.org
+    /// https://epsg.io
+    /// </param>
+    /// See also <see cref="CrsProjection"/>
+    """
+    @staticmethod
+    def GetCrsProjectionByEpsgNumber(epsg: int) -> CrsProjection:
+        # TODO implement with a hashmap maybe ...
+        for crs in CrsProjection:
+            if crs.value == epsg:
+                return crs
+        raise ValueError(f"Could not find CrsProjection for EPSG {epsg}")
 
-        """
-        /// <summary>
-        /// Convenience method for retrieving all the projections in a List.
-        /// </summary>
-        """
-        @staticmethod
-        def GetAllCrsProjections() -> list[CrsProjection]:
-            crsProjections = []
-            for crs in CrsProjection:
-                crsProjections.append(crs)
-            return crsProjections
+    """
+    /// <summary>
+    /// Convenience method for retrieving all the projections in a List.
+    /// </summary>
+    """
+    @staticmethod
+    def GetAllCrsProjections() -> list[CrsProjection]:
+        crsProjections = []
+        for crs in CrsProjection:
+            crsProjections.append(crs)
+        return crsProjections
