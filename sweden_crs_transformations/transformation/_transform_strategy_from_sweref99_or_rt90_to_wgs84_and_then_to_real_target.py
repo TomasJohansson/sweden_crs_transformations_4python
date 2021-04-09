@@ -11,7 +11,7 @@
 """
 from sweden_crs_transformations.crs_coordinate import CrsCoordinate
 from sweden_crs_transformations.crs_projection import CrsProjection
-from sweden_crs_transformations.transformation.transform_strategy import _TransformStrategy
+from sweden_crs_transformations.transformation._transform_strategy import _TransformStrategy
 
 
 class _TransFormStrategy_From_Sweref99OrRT90_to_WGS84_andThenToRealTarget(_TransformStrategy):
@@ -20,7 +20,7 @@ class _TransFormStrategy_From_Sweref99OrRT90_to_WGS84_andThenToRealTarget(_Trans
         sourceCoordinate: CrsCoordinate,
         finalTargetCrsProjection: CrsProjection
     ) -> CrsCoordinate:
-        from sweden_crs_transformations.transformation.transformer import _Transformer
+        from sweden_crs_transformations.transformation._transformer import _Transformer
         sourceCoordinateProjection: CrsProjection = sourceCoordinate.get_crs_projection()
         if(not(
             (sourceCoordinateProjection.is_sweref99() or sourceCoordinateProjection.is_rt90())

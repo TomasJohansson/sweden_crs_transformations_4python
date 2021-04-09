@@ -85,7 +85,7 @@ class CrsCoordinate:
         | Transforms the coordinate to another coordinate reference system
         | :param targetCrsProjection: the coordinate reference system that you want to transform to
         """
-        from sweden_crs_transformations.transformation.transformer import _Transformer
+        from sweden_crs_transformations.transformation._transformer import _Transformer
         return _Transformer.transform(self, targetCrsProjection)
 
     def transform_by_epsg_number(self, targetEpsgNumber: int) -> CrsCoordinate:
