@@ -102,7 +102,7 @@ CrsProjection.IsRT90 = isRT90
 
 
 '''
-# TODO move this file driectly into the file 'crs_projection.py' and then this file 'crs_projection_extensions.py' can be deleted
+# this method below has been moved into the file 'crs_projection.py' and then this file 'crs_projection_extensions.py' can be deleted
 public static CrsCoordinate CreateCoordinate(
     this CrsProjection crsProjection,
     double yLatitude,

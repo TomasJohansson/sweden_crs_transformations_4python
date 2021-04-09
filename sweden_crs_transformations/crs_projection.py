@@ -1,4 +1,6 @@
-﻿import enum
+﻿from __future__ import annotations # without this the type hint (method annotation) '-> CrsCoordinate:' causes error:  NameError: name 'CrsCoordinate' is not defined
+# from sweden_crs_transformations.crs_coordinate import CrsCoordinate # ImportError ... circular import
+import enum
 """
 /*
 * Copyright (c) Tomas Johansson , http://www.programmerare.com
@@ -103,6 +105,14 @@ class CrsProjection(enum.Enum):
     def is_rt90(self) -> bool:
         epsgNumber: int = self.get_epsg_number()
         return _EpsgConstant._epsgLowerValueForRT90 <= epsgNumber <= _EpsgConstant._epsgUpperValueForRT90
+
+    def create_coordinate(self,
+        yLatitude: float,
+        xLongitude: float
+    ) -> CrsCoordinate:  # requires 'from __future__ import annotations' at the top of the file
+        # the below 'from ... import' statement can not be at the top of the file since it causes error with circular import
+        from sweden_crs_transformations.crs_coordinate import CrsCoordinate
+        return CrsCoordinate.create_coordinate(self, yLatitude, xLongitude)
 
     def __str__(self):
         return f"{self.name}(EPSG:{self.get_epsg_number()})"

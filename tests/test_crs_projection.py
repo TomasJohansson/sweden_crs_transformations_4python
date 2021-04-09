@@ -114,15 +114,12 @@ class CrsProjectionTest(unittest.TestCase):
         )
 
 
-    '''
-    [Test]
-    public void CreateCoordinate() {
-        const double x = 22.5;
-        const double y = 62.5;
-        CrsCoordinate crsCoordinate = CrsProjection.sweref_99_tm.CreateCoordinate(y, x);
-        Assert.AreEqual(epsgNumberForSweref99tm, crsCoordinate.CrsProjection.GetEpsgNumber());
-        Assert.AreEqual(CrsProjection.sweref_99_tm, crsCoordinate.CrsProjection);
-        const double delta = 0.000001;
-        Assert.AreEqual(x, crsCoordinate.LongitudeX, delta);
-        Assert.AreEqual(y, crsCoordinate.LatitudeY, delta);
-    '''
+    def test_CreateCoordinate(self):
+        x = 22.5
+        y = 62.5
+        crsCoordinate: CrsCoordinate = CrsProjection.SWEREF_99_TM.create_coordinate(y, x)
+        self.assertEqual(CrsProjectionTest.epsgNumberForSweref99tm, crsCoordinate.get_crs_projection().get_epsg_number())
+        self.assertEqual(CrsProjection.SWEREF_99_TM, crsCoordinate.get_crs_projection())
+        delta = 0.000001
+        self.assertEqual(x, crsCoordinate.get_longitude_x(), delta)
+        self.assertEqual(y, crsCoordinate.get_latitude_y(), delta)
