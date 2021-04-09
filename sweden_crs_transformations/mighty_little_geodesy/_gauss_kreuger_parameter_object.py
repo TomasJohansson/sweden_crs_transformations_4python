@@ -1,7 +1,30 @@
-﻿import sys
+﻿"""
+| Copyright (c) Tomas Johansson , http://www.programmerare.com
+| The code in this library is licensed with MIT.
+| The library is based on the C#.NET library 'sweden_crs_transformations_4net' (https://github.com/TomasJohansson/sweden_crs_transformations_4net)
+| which in turn is based on 'MightyLittleGeodesy' (https://github.com/bjornsallarp/MightyLittleGeodesy/)
+| which is also released with MIT.
+| License information about 'sweden_crs_transformations_4python' and 'MightyLittleGeodesy':
+| https://github.com/TomasJohansson/sweden_crs_transformations_4python/blob/python_SwedenCrsTransformations/LICENSE
+| For more information see the webpage below.
+| https://github.com/TomasJohansson/sweden_crs_transformations_4python
+"""
+
+import sys
 from sweden_crs_transformations.crs_projection import CrsProjection
 
 class _GaussKreugerParameterObject:
+    """
+    | This class '_GaussKreugerParameterObject' was not part of the original 'MightyLittleGeodesy' library,
+    | but most of the code in this class has been moved here from the class 'GaussKreuger'
+    | when it was refactored to become immutable i.e. with only readonly/final (e.g. in the JVM implementation) fields.
+    | To do that refactoring, this class was created.
+    | It has the same fields as GaussKreuger and also the same methods that mutates
+    | those fields.
+    | But then when it is finished with the initialization of the fields,
+    | the object is used as parameter to the GaussKreuger constructor and the values of the fields
+    | are copied into the corresponding readonly fields of the GaussKreuger class.
+    """
 
     def __init__(self, crsProjection: CrsProjection):
         self._axis = 0                  # Semi-major axis of the ellipsoid.
@@ -13,12 +36,12 @@ class _GaussKreugerParameterObject:
         self._swedish_params(crsProjection)
 
     """
-    // Parameters for RT90 and SWEREF99TM.
-    // Note: Parameters for RT90 are choosen to eliminate the
-    // differences between Bessel and GRS80-ellipsoides.
-    // Bessel-variants should only be used if lat/long are given as
-    // RT90-lat/long based on the Bessel ellipsoide (from old maps).
-    // Parameter: projection (string). Must match if-statement.
+    | Parameters for RT90 and SWEREF99TM.
+    | Note: Parameters for RT90 are choosen to eliminate the
+    | differences between Bessel and GRS80-ellipsoides.
+    | Bessel-variants should only be used if lat/long are given as
+    | RT90-lat/long based on the Bessel ellipsoide (from old maps).
+    | Parameter: projection (string). Must match if-statement.
     """
     def _swedish_params(self, projection: CrsProjection):
         # // RT90 parameters, GRS 80 ellipsoid.

@@ -5,44 +5,45 @@ from sweden_crs_transformations.mighty_little_geodesy._lat_lon import _LatLon
 from sweden_crs_transformations.mighty_little_geodesy._gauss_kreuger_parameter_object import _GaussKreugerParameterObject
 
 """
-/*
-* Copyright (c) Tomas Johansson , http://www.programmerare.com
-* The code in this library is licensed with MIT.
-* The library is based on the library 'MightyLittleGeodesy' (https://github.com/bjornsallarp/MightyLittleGeodesy/)
-* which is also released with MIT.
-* License information about 'sweden_crs_transformations_4net' and 'MightyLittleGeodesy':
-* https://github.com/TomasJohansson/sweden_crs_transformations_4net/blob/csharpe_SwedenCrsTransformations/LICENSE
-* For more information see the webpage below.
-* https://github.com/TomasJohansson/sweden_crs_transformations_4net
-*/
+| Copyright (c) Tomas Johansson , http://www.programmerare.com
+| The code in this library is licensed with MIT.
+| The library is based on the C#.NET library 'sweden_crs_transformations_4net' (https://github.com/TomasJohansson/sweden_crs_transformations_4net)
+| which in turn is based on 'MightyLittleGeodesy' (https://github.com/bjornsallarp/MightyLittleGeodesy/)
+| which is also released with MIT.
+| License information about 'sweden_crs_transformations_4python' and 'MightyLittleGeodesy':
+| https://github.com/TomasJohansson/sweden_crs_transformations_4python/blob/python_SwedenCrsTransformations/LICENSE
+| For more information see the webpage below.
+| https://github.com/TomasJohansson/sweden_crs_transformations_4python
+|
+| Please note that some of the below comments may not have been updated for this Python implementation of the library.
+|
+| This project is based on the library [MightyLittleGeodesy](https://github.com/bjornsallarp/MightyLittleGeodesy/)
+| It started as a fork, but then most of the original code is gone.
+| The main part that is still used is this file with the mathematical calculations i.e. the file "GaussKreuger.cs"
+| Although there has been some modifications of this file too, as mentioned below.
 
-// This project is based on the library [MightyLittleGeodesy](https://github.com/bjornsallarp/MightyLittleGeodesy/)
-// It started as a fork, but then most of the original code is gone.
-// The main part that is still used is this file with the mathematical calculations i.e. the file "GaussKreuger.cs"
-// Although there has been some modifications of this file too, as mentioned below.
+| https://github.com/bjornsallarp/MightyLittleGeodesy/blob/83491fc6e7454f5d90d792610b317eca7a332334/MightyLittleGeodesy/Classes/GaussKreuger.cs
+| The original version of the below class 'GaussKreuger' is located at the above URL.
+| That original version has been modified below in this file below but not in a significant way (e.g. the mathematical calculations has not been modified).
+| The modifications:
+|      - changed the class from public to internal i.e. "public class GaussKreuger" ==> "internal class GaussKreuger"
+|      - a new 'LatLon' class is used as return type from two methods instead of returning an array "double[]"
+|              i.e. the two method signatures have changed as below:
+|              "public double[] geodetic_to_grid(double latitude, double longitude)"  ==> "public LatLon geodetic_to_grid(double latitude, double longitude)"
+|              "public double[] grid_to_geodetic(double x, double y)" ==> "public LatLon grid_to_geodetic(double yLatitude, double xLongitude)"
+|      - renamed and changed order of the parameters for the method "grid_to_geodetic" (see the above line)
+|      - changed the method "swedish_params" to use an enum as parameter instead of string, i.e. the method signature changed as below:
+|              "public void swedish_params(string projection)" ==> "public void swedish_params(CrsProjection projection)"
+|      - now the if/else statements in the implementation of the above method "swedish_params" compares with the enum values for CrsProjection instead of comparing with string literals
+|      - removed the if/else statements in the above method "swedish_params" which used the projection strings beginning with "bessel_rt90"
+|      - updated the GaussKreuger class to be immutable with readonly fields, and the methods (e.g. the above mentioned method "swedish_params") that
+|          previously initialized (mutated) the fields have instead been moved to another class and is provided as a
+|          parameter object to the constructor which copies the values into the readonly fields.
+|
+| For more details about exactly what has changed in this GaussKreuger class, you can also use a git client with "compare" or "blame" features to see the changes)
 
-// https://github.com/bjornsallarp/MightyLittleGeodesy/blob/83491fc6e7454f5d90d792610b317eca7a332334/MightyLittleGeodesy/Classes/GaussKreuger.cs
-// The original version of the below class 'GaussKreuger' is located at the above URL.
-// That original version has been modified below in this file below but not in a significant way (e.g. the mathematical calculations has not been modified).
-// The modifications:
-//      - changed the class from public to internal i.e. "public class GaussKreuger" ==> "internal class GaussKreuger"
-//      - a new 'LatLon' class is used as return type from two methods instead of returning an array "double[]"
-//              i.e. the two method signatures have changed as below:
-//              "public double[] geodetic_to_grid(double latitude, double longitude)"  ==> "public LatLon geodetic_to_grid(double latitude, double longitude)"
-//              "public double[] grid_to_geodetic(double x, double y)" ==> "public LatLon grid_to_geodetic(double yLatitude, double xLongitude)"
-//      - renamed and changed order of the parameters for the method "grid_to_geodetic" (see the above line)
-//      - changed the method "swedish_params" to use an enum as parameter instead of string, i.e. the method signature changed as below:
-//              "public void swedish_params(string projection)" ==> "public void swedish_params(CrsProjection projection)"
-//      - now the if/else statements in the implementation of the above method "swedish_params" compares with the enum values for CrsProjection instead of comparing with string literals
-//      - removed the if/else statements in the above method "swedish_params" which used the projection strings beginning with "bessel_rt90"
-//      - updated the GaussKreuger class to be immutable with readonly fields, and the methods (e.g. the above mentioned method "swedish_params") that
-//          previously initialized (mutated) the fields have instead been moved to another class and is provided as a
-//          parameter object to the constructor which copies the values into the readonly fields.
-//
-// For more details about exactly what has changed in this GaussKreuger class, you can also use a git client with "compare" or "blame" features to see the changes)
-
-// ------------------------------------------------------------------------------------------
-// The below comment block is kept from the original source file (see the above github URL)
+| ------------------------------------------------------------------------------------------
+| The below comment block is kept from the original source file (see the above github URL)
 /*
  * MightyLittleGeodesy
  * RT90, SWEREF99 and WGS84 coordinate transformation library
@@ -67,9 +68,8 @@ from sweden_crs_transformations.mighty_little_geodesy._gauss_kreuger_parameter_o
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-// ------------------------------------------------------------------------------------------
+| ------------------------------------------------------------------------------------------
 
-using System;
 """
 
 """

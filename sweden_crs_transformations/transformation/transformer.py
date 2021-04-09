@@ -1,14 +1,13 @@
 ﻿"""
-/*
-* Copyright (c) Tomas Johansson , http://www.programmerare.com
-* The code in this library is licensed with MIT.
-* The library is based on the library 'MightyLittleGeodesy' (https://github.com/bjornsallarp/MightyLittleGeodesy/)
-* which is also released with MIT.
-* License information about 'sweden_crs_transformations_4net' and 'MightyLittleGeodesy':
-* https://github.com/TomasJohansson/sweden_crs_transformations_4net/blob/csharpe_SwedenCrsTransformations/LICENSE
-* For more information see the webpage below.
-* https://github.com/TomasJohansson/sweden_crs_transformations_4net
-*/
+| Copyright (c) Tomas Johansson , http://www.programmerare.com
+| The code in this library is licensed with MIT.
+| The library is based on the C#.NET library 'sweden_crs_transformations_4net' (https://github.com/TomasJohansson/sweden_crs_transformations_4net)
+| which in turn is based on 'MightyLittleGeodesy' (https://github.com/bjornsallarp/MightyLittleGeodesy/)
+| which is also released with MIT.
+| License information about 'sweden_crs_transformations_4python' and 'MightyLittleGeodesy':
+| https://github.com/TomasJohansson/sweden_crs_transformations_4python/blob/python_SwedenCrsTransformations/LICENSE
+| For more information see the webpage below.
+| https://github.com/TomasJohansson/sweden_crs_transformations_4python
 """
 from sweden_crs_transformations.crs_coordinate import CrsCoordinate
 from sweden_crs_transformations.crs_projection import CrsProjection
@@ -21,16 +20,13 @@ from sweden_crs_transformations.transformation.transform_strategy_from_wgs84_to_
 class Transformer:
 
     # Implementations of transformations from WGS84:
-    # private static readonly TransformStrategy _transformStrategy_from_WGS84_to_SWEREF99_or_RT90 = new TransformStrategy_from_WGS84_to_SWEREF99_or_RT90();
     transformStrategy_From_WGS84_to_SWEREF99_or_RT90 = TransformStrategy_from_WGS84_to_SWEREF99_or_RT90()
 
 
     # Implementations of transformations to WGS84:
-    # private static readonly TransformStrategy _transformStrategy_from_SWEREF99_or_RT90_to_WGS84 = new TransformStrategy_from_SWEREF99_or_RT90_to_WGS84();
     transformStrategy_From_SWEREF99_or_RT90_to_WGS84 = TransformStrategy_from_SWEREF99_or_RT90_to_WGS84()
 
     # Implementation first transforming to WGS84 and then to the real target:
-    # private static readonly TransformStrategy _transFormStrategy_From_Sweref99OrRT90_to_WGS84_andThenToRealTarget  = new TransFormStrategy_From_Sweref99OrRT90_to_WGS84_andThenToRealTarget();
     transFormStrategy_From_Sweref99OrRT90_to_WGS84_andThenToRealTarget = TransFormStrategy_From_Sweref99OrRT90_to_WGS84_andThenToRealTarget()
 
     @staticmethod

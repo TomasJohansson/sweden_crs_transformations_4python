@@ -4,94 +4,66 @@
 from sweden_crs_transformations.crs_projection_factory import CrsProjectionFactory
 
 """
-/*
-* Copyright (c) Tomas Johansson , http://www.programmerare.com
-* The code in this library is licensed with MIT.
-* The library is based on the library 'MightyLittleGeodesy' (https://github.com/bjornsallarp/MightyLittleGeodesy/)
-* which is also released with MIT.
-* License information about 'sweden_crs_transformations_4net' and 'MightyLittleGeodesy':
-* https://github.com/TomasJohansson/sweden_crs_transformations_4net/blob/csharpe_SwedenCrsTransformations/LICENSE
-* For more information see the webpage below.
-* https://github.com/TomasJohansson/sweden_crs_transformations_4net
-*/
+| Copyright (c) Tomas Johansson , http://www.programmerare.com
+| The code in this library is licensed with MIT.
+| The library is based on the C#.NET library 'sweden_crs_transformations_4net' (https://github.com/TomasJohansson/sweden_crs_transformations_4net)
+| which in turn is based on 'MightyLittleGeodesy' (https://github.com/bjornsallarp/MightyLittleGeodesy/)
+| which is also released with MIT.
+| License information about 'sweden_crs_transformations_4python' and 'MightyLittleGeodesy':
+| https://github.com/TomasJohansson/sweden_crs_transformations_4python/blob/python_SwedenCrsTransformations/LICENSE
+| For more information see the webpage below.
+| https://github.com/TomasJohansson/sweden_crs_transformations_4python
 """
 from sweden_crs_transformations.crs_projection import CrsProjection
 
-"""
-    /// <summary>
-    /// Coordinate, defined by the three parameters for the factory methods.
-    /// </summary>
-"""
 class CrsCoordinate:
+    """
+    | Coordinate, defined by the three parameters for the factory methods.
+    """
 
-    """
-    /// <summary>
-    /// The coordinate reference system that defines the location together with the other two properties (LongitudeX and LatitudeY).
-    /// </summary>
-    """
-    # public CrsProjection CrsProjection { get; private set; }
     def get_crs_projection(self) -> CrsProjection:
+        """
+        | The coordinate reference system that defines the location together with the other two properties (LongitudeX and LatitudeY).
+        """
         return self.crsProjection
 
-    """
-    /// <summary>
-    /// The coordinate value representing the longitude or X or Easting.
-    /// </summary>
-    """
-    # public double LongitudeX { get; private set; }
     def get_longitude_x(self) -> float:
+        """
+        | The coordinate value representing the longitude or X or Easting.
+        """
         return self.xLongitude
 
-
-    """
-    /// <summary>
-    /// The coordinate value representing the latitude or Y or Northing.
-    /// </summary>
-    """
-    # public double LatitudeY { get; private set; }
     def get_latitude_y(self) -> float:
+        """
+        | The coordinate value representing the latitude or Y or Northing.
+        """
         return self.yLatitude
 
-    """
-    /// <summary>
-    /// Private constructor. Client code must instead use the public factory methods.
-    /// </summary>
-    """
     def __init__(self, crsProjection: CrsProjection, yLatitude: float, xLongitude: float):
+        """
+        | Client code can instead use the factory class methods.
+        """
         self.crsProjection = crsProjection
         self.yLatitude = yLatitude
         self.xLongitude = xLongitude
 
 
-    """
-    /// <summary>
-    /// Transforms the coordinate to another coordinate reference system
-    /// </summary>
-    /// <param name="targetCrsProjection">the coordinate reference system that you want to transform to</param>
-    """
     def transform(self, targetCrsProjection: CrsProjection) -> CrsCoordinate:
+        """
+        | Transforms the coordinate to another coordinate reference system
+        | :param targetCrsProjection: the coordinate reference system that you want to transform to
+        """
         from sweden_crs_transformations.transformation.transformer import Transformer
         return Transformer.transform(self, targetCrsProjection)
 
-    """
-    /// <summary>
-    /// Transforms the coordinate to another coordinate reference system
-    /// </summary>
-    /// <param name="targetEpsgNumber">the coordinate reference system that you want to transform to</param>
-    """
     def transform_by_epsg_number(self, targetEpsgNumber: int) -> CrsCoordinate:
+        """
+        | Transforms the coordinate to another coordinate reference system
+        | :param targetEpsgNumber: the coordinate reference system that you want to transform to
+        """
         targetCrsProjection: CrsProjection = CrsProjectionFactory.get_crs_projection_by_epsg_number(targetEpsgNumber)
         return self.transform(targetCrsProjection)
 
-
-    """
-    /// <summary>
-    /// Factory method for creating an instance.
-    /// </summary>
-    /// <param name="epsgNumber">represents the coordinate reference system that defines the location together with the other two parameters</param>
-    /// <param name="xLongitude">the coordinate position value representing the longitude or X or Easting</param>
-    /// <param name="yLatitude">the coordinate position value representing the latitude or Y or Northing</param>
-    """
 
     @classmethod
     def create_coordinate_by_epsg_number(cls,
@@ -99,18 +71,14 @@ class CrsCoordinate:
         yLatitude: float,
         xLongitude: float
     ) -> CrsCoordinate:
+        """
+        | Factory method for creating an instance.
+        | :param epsgNumber: represents the coordinate reference system that defines the location together with the other two parameters
+        | :param yLatitude: the coordinate position value representing the latitude or Y or Northing
+        | :param xLongitude: the coordinate position value representing the longitude or X or Easting
+        """
         crsProjection: CrsProjection = CrsProjectionFactory.get_crs_projection_by_epsg_number(epsgNumber)
         return cls.create_coordinate(crsProjection, yLatitude, xLongitude)
-
-    """
-    /// <summary>
-    /// Factory method for creating an instance.
-    /// See also <see cref="CrsProjection"/>
-    /// </summary>
-    /// <param name="crsProjection">represents the coordinate reference system that defines the location together with the other two parameters</param>
-    /// <param name="xLongitude">the coordinate position value representing the longitude or X or Easting</param>
-    /// <param name="yLatitude">the coordinate position value representing the latitude or Y or Northing</param>
-    """
 
     @classmethod
     def create_coordinate(cls,
@@ -118,10 +86,19 @@ class CrsCoordinate:
         yLatitude: float,
         xLongitude: float
     ) -> CrsCoordinate:
+        """
+        | Factory method for creating an instance.
+        | :param crsProjection: represents the coordinate reference system that defines the location together with the other two parameters
+        | :param yLatitude: the coordinate position value representing the latitude or Y or Northing
+        | :param xLongitude: the coordinate position value representing the longitude or X or Easting
+        """
         return cls(crsProjection, yLatitude, xLongitude)
+
 
     """
     # // ----------------------------------------------------------------------------------------------------------------------
+    # C#.NET code:
+
     # // These five methods below was generated with Visual Studio 2019
     """
 
@@ -156,14 +133,12 @@ class CrsCoordinate:
     #// These five methods above was generated with Visual Studio 2019
     # // ----------------------------------------------------------------------------------------------------------------------
 
-    """
-    /// <summary>
-    /// Two examples of the string that can be returned:
-    /// "CrsCoordinate [ X: 153369.673 , Y: 6579457.649 , CRS: SWEREF_99_18_00 ]"
-    /// "CrsCoordinate [ Longitude: 18.059196 , Latitude: 59.330231 , CRS: WGS84 ]"
-    /// </summary>
-    """
     def __str__(self):
+        """
+        | Two examples of the string that can be returned:
+        | "CrsCoordinate [ X: 153369.673 , Y: 6579457.649 , CRS: SWEREF_99_18_00 ]"
+        | "CrsCoordinate [ Longitude: 18.059196 , Latitude: 59.330231 , CRS: WGS84 ]"
+        """
         crs: str = str(self.get_crs_projection()).upper()
         isWgs84: bool = self.get_crs_projection().is_wgs84()
         yOrLatitude: str = "Y"
