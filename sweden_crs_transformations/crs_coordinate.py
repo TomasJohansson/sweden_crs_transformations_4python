@@ -21,6 +21,47 @@ class CrsCoordinate:
     | Coordinate, defined by the three parameters for the factory methods.
     """
 
+    def __init__(self,
+        crsProjection: CrsProjection,
+        yLatitude: float,
+        xLongitude: float
+    ):
+        """
+        | Client code can instead use the factory class methods.
+        """
+        self.crsProjection = crsProjection
+        self.yLatitude = yLatitude
+        self.xLongitude = xLongitude
+
+    @classmethod
+    def create_coordinate(cls,
+        crsProjection: CrsProjection,
+        yLatitude: float,
+        xLongitude: float
+    ) -> CrsCoordinate:
+        """
+        | Factory method for creating an instance.
+        | :param crsProjection: represents the coordinate reference system that defines the location together with the other two parameters
+        | :param yLatitude: the coordinate position value representing the latitude or Y or Northing
+        | :param xLongitude: the coordinate position value representing the longitude or X or Easting
+        """
+        return cls(crsProjection, yLatitude, xLongitude)
+
+    @classmethod
+    def create_coordinate_by_epsg_number(cls,
+        epsgNumber: int,
+        yLatitude: float,
+        xLongitude: float
+    ) -> CrsCoordinate:
+        """
+        | Factory method for creating an instance.
+        | :param epsgNumber: represents the coordinate reference system that defines the location together with the other two parameters
+        | :param yLatitude: the coordinate position value representing the latitude or Y or Northing
+        | :param xLongitude: the coordinate position value representing the longitude or X or Easting
+        """
+        crsProjection: CrsProjection = CrsProjectionFactory.get_crs_projection_by_epsg_number(epsgNumber)
+        return cls.create_coordinate(crsProjection, yLatitude, xLongitude)
+
     def get_crs_projection(self) -> CrsProjection:
         """
         | The coordinate reference system that defines the location together with the other two properties (LongitudeX and LatitudeY).
@@ -39,15 +80,6 @@ class CrsCoordinate:
         """
         return self.yLatitude
 
-    def __init__(self, crsProjection: CrsProjection, yLatitude: float, xLongitude: float):
-        """
-        | Client code can instead use the factory class methods.
-        """
-        self.crsProjection = crsProjection
-        self.yLatitude = yLatitude
-        self.xLongitude = xLongitude
-
-
     def transform(self, targetCrsProjection: CrsProjection) -> CrsCoordinate:
         """
         | Transforms the coordinate to another coordinate reference system
@@ -65,34 +97,20 @@ class CrsCoordinate:
         return self.transform(targetCrsProjection)
 
 
-    @classmethod
-    def create_coordinate_by_epsg_number(cls,
-        epsgNumber: int,
-        yLatitude: float,
-        xLongitude: float
-    ) -> CrsCoordinate:
+    def __str__(self):
         """
-        | Factory method for creating an instance.
-        | :param epsgNumber: represents the coordinate reference system that defines the location together with the other two parameters
-        | :param yLatitude: the coordinate position value representing the latitude or Y or Northing
-        | :param xLongitude: the coordinate position value representing the longitude or X or Easting
+        | Two examples of the string that can be returned:
+        | "CrsCoordinate [ X: 153369.673 , Y: 6579457.649 , CRS: SWEREF_99_18_00 ]"
+        | "CrsCoordinate [ Longitude: 18.059196 , Latitude: 59.330231 , CRS: WGS84 ]"
         """
-        crsProjection: CrsProjection = CrsProjectionFactory.get_crs_projection_by_epsg_number(epsgNumber)
-        return cls.create_coordinate(crsProjection, yLatitude, xLongitude)
-
-    @classmethod
-    def create_coordinate(cls,
-        crsProjection: CrsProjection,
-        yLatitude: float,
-        xLongitude: float
-    ) -> CrsCoordinate:
-        """
-        | Factory method for creating an instance.
-        | :param crsProjection: represents the coordinate reference system that defines the location together with the other two parameters
-        | :param yLatitude: the coordinate position value representing the latitude or Y or Northing
-        | :param xLongitude: the coordinate position value representing the longitude or X or Easting
-        """
-        return cls(crsProjection, yLatitude, xLongitude)
+        crs: str = str(self.get_crs_projection()).upper()
+        isWgs84: bool = self.get_crs_projection().is_wgs84()
+        yOrLatitude: str = "Y"
+        xOrLongitude: str = "X"
+        if (isWgs84):
+            yOrLatitude = "Latitude"
+            xOrLongitude = "Longitude"
+        return f"CrsCoordinate [ {yOrLatitude}: {self.get_latitude_y()} , {xOrLongitude}: {self.get_longitude_x()} , CRS: {crs} ]"
 
 
     """
@@ -133,17 +151,3 @@ class CrsCoordinate:
     #// These five methods above was generated with Visual Studio 2019
     # // ----------------------------------------------------------------------------------------------------------------------
 
-    def __str__(self):
-        """
-        | Two examples of the string that can be returned:
-        | "CrsCoordinate [ X: 153369.673 , Y: 6579457.649 , CRS: SWEREF_99_18_00 ]"
-        | "CrsCoordinate [ Longitude: 18.059196 , Latitude: 59.330231 , CRS: WGS84 ]"
-        """
-        crs: str = str(self.get_crs_projection()).upper()
-        isWgs84: bool = self.get_crs_projection().is_wgs84()
-        yOrLatitude: str = "Y"
-        xOrLongitude: str = "X"
-        if (isWgs84):
-            yOrLatitude = "Latitude"
-            xOrLongitude = "Longitude"
-        return f"CrsCoordinate [ {yOrLatitude}: {self.get_latitude_y()} , {xOrLongitude}: {self.get_longitude_x()} , CRS: {crs} ]"
