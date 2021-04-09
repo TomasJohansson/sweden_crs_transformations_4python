@@ -17,7 +17,7 @@ from sweden_crs_transformations.mighty_little_geodesy._lat_lon import _LatLon
 from sweden_crs_transformations.transformation.transform_strategy import _TransformStrategy
 
 
-class TransformStrategy_from_SWEREF99_or_RT90_to_WGS84(_TransformStrategy):
+class _TransformStrategy_from_SWEREF99_or_RT90_to_WGS84(_TransformStrategy):
     # Precondition: sourceCoordinate must be CRS SWEREF99 or RT90 , and the target must be WGS84
     def transform(self,
         sourceCoordinate: CrsCoordinate,
@@ -29,8 +29,8 @@ class TransformStrategy_from_SWEREF99_or_RT90_to_WGS84(_TransformStrategy):
             and
             targetCrsProjection.is_wgs84()
         )):
-            from sweden_crs_transformations.transformation.transformer import Transformer
-            Transformer._throwExceptionMessage(sourceCoordinate.get_crs_projection(), targetCrsProjection)
+            from sweden_crs_transformations.transformation.transformer import _Transformer
+            _Transformer._throwExceptionMessage(sourceCoordinate.get_crs_projection(), targetCrsProjection)
 
         gaussKreugerParameterObject = _GaussKreugerParameterObject(sourceCoordinateProjection)
         gaussKreuger = _GaussKreuger(gaussKreugerParameterObject)

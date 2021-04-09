@@ -14,21 +14,21 @@ from sweden_crs_transformations.crs_projection import CrsProjection
 from sweden_crs_transformations.transformation.transform_strategy import _TransformStrategy
 
 
-class TransFormStrategy_From_Sweref99OrRT90_to_WGS84_andThenToRealTarget(_TransformStrategy):
+class _TransFormStrategy_From_Sweref99OrRT90_to_WGS84_andThenToRealTarget(_TransformStrategy):
     # Precondition: sourceCoordinate must be CRS SWEREF99 or RT90, and the target too
     def transform(self,
         sourceCoordinate: CrsCoordinate,
         finalTargetCrsProjection: CrsProjection
     ) -> CrsCoordinate:
-        from sweden_crs_transformations.transformation.transformer import Transformer
+        from sweden_crs_transformations.transformation.transformer import _Transformer
         sourceCoordinateProjection: CrsProjection = sourceCoordinate.get_crs_projection()
         if(not(
             (sourceCoordinateProjection.is_sweref99() or sourceCoordinateProjection.is_rt90())
             and
             (finalTargetCrsProjection.is_sweref99() or finalTargetCrsProjection.is_rt90())
         )):
-            Transformer._throwExceptionMessage(sourceCoordinate.get_crs_projection(), finalTargetCrsProjection)
+            _Transformer._throwExceptionMessage(sourceCoordinate.get_crs_projection(), finalTargetCrsProjection)
 
         intermediateCrsProjection = CrsProjection.WGS84
-        intermediateWgs84coordinate = Transformer.transform(sourceCoordinate, intermediateCrsProjection)
-        return Transformer.transform(intermediateWgs84coordinate, finalTargetCrsProjection)
+        intermediateWgs84coordinate = _Transformer.transform(sourceCoordinate, intermediateCrsProjection)
+        return _Transformer.transform(intermediateWgs84coordinate, finalTargetCrsProjection)
