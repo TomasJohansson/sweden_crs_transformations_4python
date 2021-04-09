@@ -59,7 +59,7 @@ class CrsCoordinate:
         | :param yLatitude: the coordinate position value representing the latitude or Y or Northing
         | :param xLongitude: the coordinate position value representing the longitude or X or Easting
         """
-        crsProjection: CrsProjection = CrsProjectionFactory.get_crs_projection_by_epsg_number(epsgNumber)
+        crsProjection: CrsProjection = CrsProjection.get_crs_projection_by_epsg_number(epsgNumber)
         return cls.create_coordinate(crsProjection, yLatitude, xLongitude)
 
     def get_crs_projection(self) -> CrsProjection:
@@ -93,7 +93,7 @@ class CrsCoordinate:
         | Transforms the coordinate to another coordinate reference system
         | :param targetEpsgNumber: the coordinate reference system that you want to transform to
         """
-        targetCrsProjection: CrsProjection = CrsProjectionFactory.get_crs_projection_by_epsg_number(targetEpsgNumber)
+        targetCrsProjection: CrsProjection = CrsProjection.get_crs_projection_by_epsg_number(targetEpsgNumber)
         return self.transform(targetCrsProjection)
 
 

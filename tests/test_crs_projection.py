@@ -1,19 +1,12 @@
 ﻿import unittest
 from sweden_crs_transformations.crs_projection import CrsProjection
 
-# using SwedenCrsTransformations;
-# using System.Collections.Generic;
-# using static SwedenCrsTransformationsTests.CrsProjectionFactoryTest; // to be able to use constants such as epsgNumberForSweref99tm and epsgNumberForWgs84
-# using static SwedenCrsTransformations.CrsProjection;
-
-
 class CrsProjectionTest(unittest.TestCase):
-    # TODO maybe define these below constants instead in 'CrsProjectionFactoryTest' as in C#.NET library being ported to this Python library
-    epsgNumberForWgs84: int = 4326
-    epsgNumberForSweref99tm: int = 3006
-    numberOfSweref99projections: int = 13  # ; // with EPSG numbers 3006-3018
-    numberOfRT90projections: int = 6  # ; // with EPSG numbers 3019-3024
-    numberOfWgs84Projections: int = 1  # ; // just to provide semantic instead of using a magic number 1 below
+    epsgNumberForWgs84 = 4326
+    epsgNumberForSweref99tm = 3006 # https://epsg.org/crs_3006/SWEREF99-TM.html
+    numberOfSweref99projections = 13 #  with EPSG numbers 3006-3018
+    numberOfRT90projections = 6 # with EPSG numbers 3019-3024
+    numberOfWgs84Projections = 1 # just to provide semantic instead of using a magic number 1 below
     totalNumberOfProjections = numberOfSweref99projections + numberOfRT90projections + numberOfWgs84Projections
 
     def setUp(self):
@@ -31,6 +24,8 @@ class CrsProjectionTest(unittest.TestCase):
             CrsProjection.RT90_0_0_GON_V, CrsProjection.RT90_2_5_GON_O, CrsProjection.RT90_2_5_GON_V,
             CrsProjection.RT90_5_0_GON_O, CrsProjection.RT90_5_0_GON_V, CrsProjection.RT90_7_5_GON_V
         }
+
+        self._allCrsProjections: list[CrsProjection] = CrsProjection.get_all_crs_projections()
 
 
     def test_get_epsg_number(self):
@@ -123,3 +118,56 @@ class CrsProjectionTest(unittest.TestCase):
         delta = 0.000001
         self.assertEqual(x, crsCoordinate.get_longitude_x(), delta)
         self.assertEqual(y, crsCoordinate.get_latitude_y(), delta)
+
+
+    def test_get_crs_projection_by_epsg_number(self):
+        self.assertEqual(
+            CrsProjection.SWEREF_99_TM,
+            CrsProjection.get_crs_projection_by_epsg_number(CrsProjectionTest.epsgNumberForSweref99tm)
+        )
+
+        self.assertEqual(
+            CrsProjection.SWEREF_99_23_15,
+            CrsProjection.get_crs_projection_by_epsg_number(3018)  # https://epsg.io/3018
+        )
+
+        self.assertEqual(
+            CrsProjection.RT90_5_0_GON_O,
+            CrsProjection.get_crs_projection_by_epsg_number(3024)  # https://epsg.io/3018
+        )
+
+
+    def test_verify_total_number_of_projections(self):
+        self.assertEqual(
+            CrsProjectionTest.totalNumberOfProjections,
+            len(self._allCrsProjections)  # retrieved with 'get_all_crs_projections' in the SetUp method
+        )
+
+    def get_number_of_projections(self, mylambda):
+        res: Iterator = filter(mylambda, self._allCrsProjections) # from typing import Iterator
+        lis = list(res)
+        return len(lis)
+
+    def test_verify_number_of_wgs84_projections(self):
+        self.assertEqual(
+            CrsProjectionTest.numberOfWgs84Projections,
+            self.get_number_of_projections(lambda crs: crs.is_wgs84())
+        )
+
+
+    def test_verify_number_of_sweref99_projections(self):
+        self.assertEqual(
+            CrsProjectionTest.numberOfSweref99projections,
+            self.get_number_of_projections(lambda crs: crs.is_sweref99())
+        )
+
+    def test_verify_number_of_rt90_projections(self):
+        self.assertEqual(
+            CrsProjectionTest.numberOfRT90projections,
+            self.get_number_of_projections(lambda crs: crs.is_rt90())
+        )
+
+    def test_verify_that_all_projections_can_be_retrieved_by_its_epsg_number(self):
+        for crsProjection in self._allCrsProjections:
+            crsProj: CrsProjection = CrsProjection.get_crs_projection_by_epsg_number(crsProjection.get_epsg_number())
+            self.assertEqual(crsProjection, crsProj)

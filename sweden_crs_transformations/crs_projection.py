@@ -104,6 +104,31 @@ class CrsProjection(enum.Enum):
     def __str__(self):
         return f"{self.name}(EPSG:{self.get_epsg_number()})"
 
+    @staticmethod
+    def get_crs_projection_by_epsg_number(epsg: int) -> CrsProjection:
+        """
+        | Factory method creating an enum 'CrsProjection' by its number (EPSG) value.
+        | :param epsg: an EPSG number.
+        | https://en.wikipedia.org/wiki/EPSG_Geodetic_Parameter_Dataset
+        | https://epsg.org
+        | https://epsg.io
+        """
+        # TODO implement with a hashmap maybe ...
+        for crs in CrsProjection:
+            if crs.value == epsg:
+                return crs
+        raise ValueError(f"Could not find CrsProjection for EPSG {epsg}")
+
+    @staticmethod
+    def get_all_crs_projections() -> list[CrsProjection]:
+        """
+        | Convenience method for retrieving all the projections in a List.
+        """
+        crsProjections = []
+        for crs in CrsProjection:
+            crsProjections.append(crs)
+        return crsProjections
+
 
 # The class below is only intended for internal usage i.e. only used by the above class CrsProjection
 class _EpsgConstant:
