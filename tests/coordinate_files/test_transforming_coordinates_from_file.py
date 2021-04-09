@@ -85,7 +85,7 @@ class TransformingCoordinatesFromFileTest(unittest.TestCase):
         // And there are 18 local CRS for sweden (i.e number of data rows in the file)
         // Thus the total number of transformations should be 18 * 6 = 108
         """
-        self.assertEquals(expectedNumberOfTransformations, numberOfTransformations)
+        self.assertEqual(expectedNumberOfTransformations, numberOfTransformations)
 
 
 
