@@ -97,6 +97,11 @@ class CrsProjection(enum.Enum):
                           y_latitude: float,
                           x_longitude: float
                           ) -> CrsCoordinate:  # requires 'from __future__ import annotations' at the top of the file
+        """
+        :param y_latitude: the coordinate position value representing the latitude or Y or Northing
+        :param x_longitude: the coordinate position value representing the longitude or X or Easting
+        :return: a coordinate (CrsCoordinate)
+        """
         # the below 'from ... import' statement can not be at the top of the file since it causes error with circular import
         from sweden_crs_transformations.crs_coordinate import CrsCoordinate
         return CrsCoordinate.create_coordinate(self, y_latitude, x_longitude)
@@ -105,19 +110,20 @@ class CrsProjection(enum.Enum):
         return f"{self.name}(EPSG:{self.get_epsg_number()})"
 
     @staticmethod
-    def get_crs_projection_by_epsg_number(epsg: int) -> CrsProjection:
+    def get_crs_projection_by_epsg_number(epsg_number: int) -> CrsProjection:
         """
         | Factory method creating an enum 'CrsProjection' by its number (EPSG) value.
-        | :param epsg: an EPSG number.
         | https://en.wikipedia.org/wiki/EPSG_Geodetic_Parameter_Dataset
         | https://epsg.org
         | https://epsg.io
+        :param epsg_number: an EPSG number.
+        :return: a projection (CrsProjection) corresponding to the EPSG number
         """
         # TODO implement with a hashmap maybe ...
         for crs in CrsProjection:
-            if crs.value == epsg:
+            if crs.value == epsg_number:
                 return crs
-        raise ValueError(f"Could not find CrsProjection for EPSG {epsg}")
+        raise ValueError(f"Could not find CrsProjection for EPSG {epsg_number}")
 
     @staticmethod
     def get_all_crs_projections() -> list[CrsProjection]:

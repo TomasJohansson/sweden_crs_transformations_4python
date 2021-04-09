@@ -43,9 +43,10 @@ class CrsCoordinate:
                           ) -> CrsCoordinate:
         """
         | Factory method for creating an instance.
-        | :param crsProjection: represents the coordinate reference system that defines the location together with the other two parameters
-        | :param yLatitude: the coordinate position value representing the latitude or Y or Northing
-        | :param xLongitude: the coordinate position value representing the longitude or X or Easting
+        :param crs_projection: represents the coordinate reference system that defines the location together with the other two parameters
+        :param y_latitude: the coordinate position value representing the latitude or Y or Northing
+        :param x_longitude: the coordinate position value representing the longitude or X or Easting
+        :return: a coordinate (CrsCoordinate)
         """
         return cls(crs_projection, y_latitude, x_longitude)
 
@@ -57,9 +58,10 @@ class CrsCoordinate:
                                          ) -> CrsCoordinate:
         """
         | Factory method for creating an instance.
-        | :param epsgNumber: represents the coordinate reference system that defines the location together with the other two parameters
-        | :param yLatitude: the coordinate position value representing the latitude or Y or Northing
-        | :param xLongitude: the coordinate position value representing the longitude or X or Easting
+        :param epsg_number: represents the coordinate reference system that defines the location together with the other two parameters
+        :param y_latitude: the coordinate position value representing the latitude or Y or Northing
+        :param x_longitude: the coordinate position value representing the longitude or X or Easting
+        :return: a coordinate (CrsCoordinate)
         """
         crs_projection: CrsProjection = CrsProjection.get_crs_projection_by_epsg_number(epsg_number)
         return cls.create_coordinate(crs_projection, y_latitude, x_longitude)
@@ -85,7 +87,8 @@ class CrsCoordinate:
     def transform(self, target_crs_projection: CrsProjection) -> CrsCoordinate:
         """
         | Transforms the coordinate to another coordinate reference system
-        | :param targetCrsProjection: the coordinate reference system that you want to transform to
+        :param target_crs_projection: the coordinate reference system that you want to transform to
+        :return: a coordinate (CrsCoordinate)
         """
         from sweden_crs_transformations.transformation._transformer import _Transformer
         return _Transformer.transform(self, target_crs_projection)
@@ -93,7 +96,8 @@ class CrsCoordinate:
     def transform_by_epsg_number(self, target_epsg_number: int) -> CrsCoordinate:
         """
         | Transforms the coordinate to another coordinate reference system
-        | :param targetEpsgNumber: the coordinate reference system that you want to transform to
+        :param target_epsg_number: the coordinate reference system that you want to transform to
+        :return: a coordinate (CrsCoordinate)
         """
         target_crs_projection: CrsProjection = CrsProjection.get_crs_projection_by_epsg_number(target_epsg_number)
         return self.transform(target_crs_projection)
