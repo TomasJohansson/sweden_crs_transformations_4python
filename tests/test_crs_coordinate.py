@@ -108,52 +108,45 @@ class CrsCoordinateTest(unittest.TestCase):
 
 
     def test_equality(self):
-        pass
-        """
-        CrsCoordinate coordinateInstance_1 = CrsCoordinate.CreateCoordinate(CrsProjection.wgs84, stockholmCentralStation_WGS84_longitude, stockholmCentralStation_WGS84_latitude)
-        CrsCoordinate coordinateInstance_2 = CrsCoordinate.CreateCoordinate(CrsProjection.wgs84, stockholmCentralStation_WGS84_longitude, stockholmCentralStation_WGS84_latitude)
-        Assert.AreEqual(coordinateInstance_1, coordinateInstance_2)
-        Assert.AreEqual(coordinateInstance_1.GetHashCode(), coordinateInstance_2.GetHashCode())
-        Assert.IsTrue(coordinateInstance_1 == coordinateInstance_2)
-        Assert.IsTrue(coordinateInstance_2 == coordinateInstance_1)
-        Assert.IsTrue(coordinateInstance_1.Equals(coordinateInstance_2))
-        Assert.IsTrue(coordinateInstance_2.Equals(coordinateInstance_1))
+        coordinateInstance_1: CrsCoordinate = CrsCoordinate.create_coordinate(CrsProjection.WGS84, CrsCoordinateTest.stockholmCentralStation_WGS84_longitude, CrsCoordinateTest.stockholmCentralStation_WGS84_latitude)
+        coordinateInstance_2: CrsCoordinate = CrsCoordinate.create_coordinate(CrsProjection.WGS84, CrsCoordinateTest.stockholmCentralStation_WGS84_longitude, CrsCoordinateTest.stockholmCentralStation_WGS84_latitude)
+        self.assertEqual(coordinateInstance_1, coordinateInstance_2)
+        self.assertEqual(hash(coordinateInstance_1), hash(coordinateInstance_2))
+        self.assertTrue(coordinateInstance_1 == coordinateInstance_2)
+        self.assertTrue(coordinateInstance_2 == coordinateInstance_1)
 
-
-        double delta = 0.000000000000001 // see comments further below regarding the value of "delta"
-        CrsCoordinate coordinateInstance_3 = CrsCoordinate.CreateCoordinate(
-            CrsProjection.wgs84,
-            stockholmCentralStation_WGS84_longitude + delta,
-            stockholmCentralStation_WGS84_latitude + delta
+        delta = 0.000000000000001  # see comments further below regarding the value of "delta"
+        coordinateInstance_3: CrsCoordinate = CrsCoordinate.create_coordinate(
+            CrsProjection.WGS84,
+            CrsCoordinateTest.stockholmCentralStation_WGS84_longitude + delta,
+            CrsCoordinateTest.stockholmCentralStation_WGS84_latitude + delta
         )
-        Assert.AreEqual(coordinateInstance_1, coordinateInstance_3)
-        Assert.AreEqual(coordinateInstance_1.GetHashCode(), coordinateInstance_3.GetHashCode())
-        Assert.IsTrue(coordinateInstance_1 == coordinateInstance_3) // method "operator =="
-        Assert.IsTrue(coordinateInstance_3 == coordinateInstance_1)
-        Assert.IsTrue(coordinateInstance_1.Equals(coordinateInstance_3))
-        Assert.IsTrue(coordinateInstance_3.Equals(coordinateInstance_1))
+        self.assertEqual(coordinateInstance_1, coordinateInstance_3)
+        self.assertEqual(hash(coordinateInstance_1), hash(coordinateInstance_3))
+        self.assertTrue(coordinateInstance_1 == coordinateInstance_3) # method "operator =="
+        self.assertTrue(coordinateInstance_3 == coordinateInstance_1)
 
+        '''
         // Regarding the chosen value for "delta" (which is added to the lon/lat values, to create a slightly different value) above and below,
         // it is because of experimentation this "breakpoint" value has been determined, i.e. the above value still resulted in equality
         // but when it was increased as below with one decimal then the above kind of assertions failed and therefore the other assertions below
         // are used instead e.g. testing the overloaded operator "!=".
         // You should generally be cautios when comparing floating point values but the above test indicate that values are considered equal even though
         // the difference is as 'big' as in the "delta" value above.
+        '''
 
-        delta = delta * 10 // moving the decimal one bit to get a somewhat larger values, and then the instances are not considered equal, as you can see in the tests below.
-        CrsCoordinate coordinateInstance_4 = CrsCoordinate.CreateCoordinate(
-            CrsProjection.wgs84,
+        delta = delta * 10  # moving the decimal one bit to get a somewhat larger values, and then the instances are not considered equal, as you can see in the tests below.
+        coordinateInstance_4: CrsCoordinate = CrsCoordinate.create_coordinate(
+            CrsProjection.WGS84,
             CrsCoordinateTest.stockholmCentralStation_WGS84_longitude + delta,
             CrsCoordinateTest.stockholmCentralStation_WGS84_latitude + delta
         )
-        // Note that below are the Are*NOT*Equal assertions made instead of AreEqual as further above when a smaller delta value was used
-        Assert.AreNotEqual(coordinateInstance_1, coordinateInstance_4)
-        Assert.AreNotEqual(coordinateInstance_1.GetHashCode(), coordinateInstance_4.GetHashCode())
-        Assert.IsTrue(coordinateInstance_1 != coordinateInstance_4) // Note that the method "operator !=" becomes used here
-        Assert.IsTrue(coordinateInstance_4 != coordinateInstance_1)
-        Assert.IsFalse(coordinateInstance_1.Equals(coordinateInstance_4))
-        Assert.IsFalse(coordinateInstance_4.Equals(coordinateInstance_1))
-        """
+        # Note that below are the Are*NOT*Equal assertions made instead of AreEqual as further above when a smaller delta value was used
+        self.assertNotEqual(coordinateInstance_1, coordinateInstance_4)
+        self.assertNotEqual(hash(coordinateInstance_1), hash(coordinateInstance_4))
+        self.assertTrue(coordinateInstance_1 != coordinateInstance_4)
+        self.assertTrue(coordinateInstance_4 != coordinateInstance_1)
+        self.assertIsNot(coordinateInstance_4, coordinateInstance_1)
 
     def test_string(self):
         coordinate: CrsCoordinate = CrsCoordinate.create_coordinate(CrsProjection.SWEREF_99_18_00, 6579457.649, 153369.673)

@@ -1,5 +1,6 @@
 ﻿from __future__ import annotations
 from typing import Final  # https://www.python.org/dev/peps/pep-0591/
+
 # without the above "from __future__ import annotations" a method in the class CrsCoordinate
 # can not define (with type hinting)  a method to return a CrsCoordinate i.e. an instance from the same class
 
@@ -112,40 +113,10 @@ class CrsCoordinate:
             x_or_longitude = "Longitude"
         return f"CrsCoordinate [ {y_or_latitude}: {self.get_latitude_y()} , {x_or_longitude}: {self.get_longitude_x()} , CRS: {crs} ]"
 
-    """
-    # // ----------------------------------------------------------------------------------------------------------------------
-    # C#.NET code:
+    def __hash__(self):
+        return hash((self.get_longitude_x(), self.get_latitude_y(), self.get_crs_projection()))
 
-    # // These five methods below was generated with Visual Studio 2019
-    """
-
-    """
-    public override bool Equals(object obj) {
-        return Equals(obj as CrsCoordinate);
-    }
-
-    public bool Equals(CrsCoordinate other) {
-        return other != null &&
-               CrsProjection == other.CrsProjection &&
-               LongitudeX == other.LongitudeX &&
-               LatitudeY == other.LatitudeY;
-    }
-
-    public override int GetHashCode() {
-        int hashCode = 1147467376;
-        hashCode = hashCode * -1521134295 + CrsProjection.GetHashCode();
-        hashCode = hashCode * -1521134295 + LongitudeX.GetHashCode();
-        hashCode = hashCode * -1521134295 + LatitudeY.GetHashCode();
-        return hashCode;
-    }
-
-    public static bool operator ==(CrsCoordinate left, CrsCoordinate right) {
-        return EqualityComparer<CrsCoordinate>.Default.Equals(left, right);
-    }
-
-    public static bool operator !=(CrsCoordinate left, CrsCoordinate right) {
-        return !(left == right);
-    }
-    """
-    # // These five methods above was generated with Visual Studio 2019
-    # // ----------------------------------------------------------------------------------------------------------------------
+    def __eq__(self, other):
+        if (type(self) != type(other)):
+            return False
+        return self.get_longitude_x() == other.get_longitude_x() and self.get_latitude_y() == other.get_latitude_y() and self.get_crs_projection() == other.get_crs_projection()
