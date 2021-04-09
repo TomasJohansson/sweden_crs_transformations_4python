@@ -6,6 +6,7 @@ from sweden_crs_transformations.crs_coordinate import CrsCoordinate
 from sweden_crs_transformations.crs_projection import CrsProjection
 
 # py -3.9 -m unittest tests/coordinate_files/test_transforming_coordinates_from_file.py
+# py -3.9 -m unittest discover -s tests
 
 class TransformingCoordinatesFromFileTest(unittest.TestCase):
 
