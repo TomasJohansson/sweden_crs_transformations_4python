@@ -1,6 +1,7 @@
 ﻿from abc import ABC, abstractmethod
 from sweden_crs_transformations.crs_coordinate import CrsCoordinate
 from sweden_crs_transformations.crs_projection import CrsProjection
+
 """
 | Copyright (c) Tomas Johansson , http://www.programmerare.com
 | The code in this library is licensed with MIT.
@@ -13,10 +14,11 @@ from sweden_crs_transformations.crs_projection import CrsProjection
 | https://github.com/TomasJohansson/sweden_crs_transformations_4python
 """
 
+
 class _TransformStrategy(ABC):
     @abstractmethod
     def transform(self,
-        sourceCoordinate : CrsCoordinate,
-        targetCrsProjection : CrsProjection
-    ) -> CrsCoordinate:
+                  source_coordinate: CrsCoordinate,
+                  target_crs_projection: CrsProjection
+                  ) -> CrsCoordinate:
         pass

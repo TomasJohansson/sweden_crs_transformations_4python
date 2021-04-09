@@ -20,19 +20,19 @@ from sweden_crs_transformations.transformation._transform_strategy import _Trans
 class _TransformStrategy_from_SWEREF99_or_RT90_to_WGS84(_TransformStrategy):
     # Precondition: sourceCoordinate must be CRS SWEREF99 or RT90 , and the target must be WGS84
     def transform(self,
-        sourceCoordinate: CrsCoordinate,
-        targetCrsProjection: CrsProjection
-    ) -> CrsCoordinate:
-        sourceCoordinateProjection = sourceCoordinate.get_crs_projection()
+                  source_coordinate: CrsCoordinate,
+                  target_crs_projection: CrsProjection
+                  ) -> CrsCoordinate:
+        source_coordinate_projection = source_coordinate.get_crs_projection()
         if(not(
-            (sourceCoordinateProjection.is_sweref99() or sourceCoordinateProjection.is_rt90())
+            (source_coordinate_projection.is_sweref99() or source_coordinate_projection.is_rt90())
             and
-            targetCrsProjection.is_wgs84()
+            target_crs_projection.is_wgs84()
         )):
             from sweden_crs_transformations.transformation._transformer import _Transformer
-            _Transformer._throwExceptionMessage(sourceCoordinate.get_crs_projection(), targetCrsProjection)
+            _Transformer._throwExceptionMessage(source_coordinate.get_crs_projection(), target_crs_projection)
 
-        gaussKreugerParameterObject = _GaussKreugerParameterObject(sourceCoordinateProjection)
+        gaussKreugerParameterObject = _GaussKreugerParameterObject(source_coordinate_projection)
         gaussKreuger = _GaussKreuger(gaussKreugerParameterObject)
-        latLon: _LatLon = gaussKreuger.grid_to_geodetic(sourceCoordinate.get_latitude_y(), sourceCoordinate.get_longitude_x())
-        return CrsCoordinate.create_coordinate(targetCrsProjection, latLon.latitudeY, latLon.longitudeX)
+        lat_lon: _LatLon = gaussKreuger.grid_to_geodetic(source_coordinate.get_latitude_y(), source_coordinate.get_longitude_x())
+        return CrsCoordinate.create_coordinate(target_crs_projection, lat_lon.latitude_y, lat_lon.longitude_x)

@@ -12,7 +12,8 @@
 from sweden_crs_transformations.crs_coordinate import CrsCoordinate
 from sweden_crs_transformations.crs_projection import CrsProjection
 from sweden_crs_transformations.mighty_little_geodesy._gauss_kreuger import _GaussKreuger
-from sweden_crs_transformations.mighty_little_geodesy._gauss_kreuger_parameter_object import _GaussKreugerParameterObject
+from sweden_crs_transformations.mighty_little_geodesy._gauss_kreuger_parameter_object import \
+    _GaussKreugerParameterObject
 from sweden_crs_transformations.mighty_little_geodesy._lat_lon import _LatLon
 from sweden_crs_transformations.transformation._transform_strategy import _TransformStrategy
 
@@ -20,19 +21,19 @@ from sweden_crs_transformations.transformation._transform_strategy import _Trans
 class _TransformStrategy_from_WGS84_to_SWEREF99_or_RT90(_TransformStrategy):
     # Precondition: sourceCoordinate must be CRS WGS84, and the target must be CRS SWEREF99 or RT90
     def transform(self,
-        sourceCoordinate: CrsCoordinate,
-        targetCrsProjection: CrsProjection
-    ) -> CrsCoordinate:
-        sourceCoordinateProjection: CrsProjection = sourceCoordinate.get_crs_projection()
-        if(not(
-            (sourceCoordinateProjection.is_wgs84())
+                  source_coordinate: CrsCoordinate,
+                  target_crs_projection: CrsProjection
+                  ) -> CrsCoordinate:
+        source_coordinate_projection: CrsProjection = source_coordinate.get_crs_projection()
+        if (not (
+            (source_coordinate_projection.is_wgs84())
             and
-            (targetCrsProjection.is_sweref99() or targetCrsProjection.is_rt90())
+            (target_crs_projection.is_sweref99() or target_crs_projection.is_rt90())
         )):
             from sweden_crs_transformations.transformation._transformer import _Transformer
-            _Transformer._throwExceptionMessage(sourceCoordinate.get_crs_projection(), targetCrsProjection)
+            _Transformer._throwExceptionMessage(source_coordinate.get_crs_projection(), target_crs_projection)
 
-        gaussKreugerParameterObject = _GaussKreugerParameterObject(targetCrsProjection)
+        gaussKreugerParameterObject = _GaussKreugerParameterObject(target_crs_projection)
         gaussKreuger = _GaussKreuger(gaussKreugerParameterObject)
-        latLon: _LatLon = gaussKreuger.geodetic_to_grid(sourceCoordinate.get_latitude_y(), sourceCoordinate.get_longitude_x())
-        return CrsCoordinate.create_coordinate(targetCrsProjection, latLon.latitudeY, latLon.longitudeX)
+        lat_lon: _LatLon = gaussKreuger.geodetic_to_grid(source_coordinate.get_latitude_y(), source_coordinate.get_longitude_x())
+        return CrsCoordinate.create_coordinate(target_crs_projection, lat_lon.latitude_y, lat_lon.longitude_x)

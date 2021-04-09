@@ -90,6 +90,7 @@ from sweden_crs_transformations.mighty_little_geodesy._gauss_kreuger_parameter_o
      */
 """
 
+
 class _GaussKreuger:
     """
     | Immutable class with all fields intended to be 'Final'

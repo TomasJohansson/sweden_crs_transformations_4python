@@ -1,6 +1,7 @@
 ﻿from __future__ import annotations # without this the type hint (method annotation) '-> CrsCoordinate:' causes error:  NameError: name 'CrsCoordinate' is not defined
 # from sweden_crs_transformations.crs_coordinate import CrsCoordinate # ImportError ... circular import
 import enum
+
 """
 | Copyright (c) Tomas Johansson , http://www.programmerare.com
 | The code in this library is licensed with MIT.
@@ -12,6 +13,7 @@ import enum
 | For more information see the webpage below.
 | https://github.com/TomasJohansson/sweden_crs_transformations_4python
 """
+
 
 class CrsProjection(enum.Enum):
     """
@@ -38,7 +40,7 @@ class CrsProjection(enum.Enum):
     | https://en.wikipedia.org/wiki/World_Geodetic_System#A_new_World_Geodetic_System:_WGS_84
     """
 
-    SWEREF_99_TM = 3006 # national sweref99 CRS
+    SWEREF_99_TM = 3006  # national sweref99 CRS
     """
     | "SWEREF 99 TM" (with EPSG code 3006) is the new national projection.
     | https://www.lantmateriet.se/sv/Kartor-och-geografisk-information/gps-geodesi-och-swepos/referenssystem/tvadimensionella-system/sweref-99-projektioner/
@@ -61,7 +63,6 @@ class CrsProjection(enum.Enum):
     SWEREF_99_21_45 = 3017
     SWEREF_99_23_15 = 3018
 
-
     # local RT90 systems (the old swedish national system):
     RT90_7_5_GON_V = 3019
     RT90_5_0_GON_V = 3020
@@ -77,7 +78,6 @@ class CrsProjection(enum.Enum):
     RT90_2_5_GON_O = 3023
     RT90_5_0_GON_O = 3024
 
-
     def get_epsg_number(self) -> int:
         # // the EPSG numbers have been used as the values in this enum
         return self.value
@@ -86,20 +86,20 @@ class CrsProjection(enum.Enum):
         return self.value == CrsProjection.WGS84.value
 
     def is_sweref99(self) -> bool:
-        epsgNumber: int = self.get_epsg_number()
-        return _EpsgConstant._epsgLowerValueForSweref <= epsgNumber <= _EpsgConstant._epsgUpperValueForSweref
+        epsg_number: int = self.get_epsg_number()
+        return _EpsgConstant._epsgLowerValueForSweref <= epsg_number <= _EpsgConstant._epsgUpperValueForSweref
 
     def is_rt90(self) -> bool:
-        epsgNumber: int = self.get_epsg_number()
-        return _EpsgConstant._epsgLowerValueForRT90 <= epsgNumber <= _EpsgConstant._epsgUpperValueForRT90
+        epsg_number: int = self.get_epsg_number()
+        return _EpsgConstant._epsgLowerValueForRT90 <= epsg_number <= _EpsgConstant._epsgUpperValueForRT90
 
     def create_coordinate(self,
-        yLatitude: float,
-        xLongitude: float
-    ) -> CrsCoordinate:  # requires 'from __future__ import annotations' at the top of the file
+                          y_latitude: float,
+                          x_longitude: float
+                          ) -> CrsCoordinate:  # requires 'from __future__ import annotations' at the top of the file
         # the below 'from ... import' statement can not be at the top of the file since it causes error with circular import
         from sweden_crs_transformations.crs_coordinate import CrsCoordinate
-        return CrsCoordinate.create_coordinate(self, yLatitude, xLongitude)
+        return CrsCoordinate.create_coordinate(self, y_latitude, x_longitude)
 
     def __str__(self):
         return f"{self.name}(EPSG:{self.get_epsg_number()})"
@@ -124,10 +124,10 @@ class CrsProjection(enum.Enum):
         """
         | Convenience method for retrieving all the projections in a List.
         """
-        crsProjections = []
+        crs_projections = []
         for crs in CrsProjection:
-            crsProjections.append(crs)
-        return crsProjections
+            crs_projections.append(crs)
+        return crs_projections
 
 
 # The class below is only intended for internal usage i.e. only used by the above class CrsProjection
@@ -136,4 +136,3 @@ class _EpsgConstant:
     _epsgUpperValueForSweref = 3018
     _epsgLowerValueForRT90 = 3019
     _epsgUpperValueForRT90 = 3024
-

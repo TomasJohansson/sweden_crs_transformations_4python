@@ -17,18 +17,18 @@ from sweden_crs_transformations.transformation._transform_strategy import _Trans
 class _TransFormStrategy_From_Sweref99OrRT90_to_WGS84_andThenToRealTarget(_TransformStrategy):
     # Precondition: sourceCoordinate must be CRS SWEREF99 or RT90, and the target too
     def transform(self,
-        sourceCoordinate: CrsCoordinate,
-        finalTargetCrsProjection: CrsProjection
-    ) -> CrsCoordinate:
+                  source_coordinate: CrsCoordinate,
+                  final_target_crs_projection: CrsProjection
+                  ) -> CrsCoordinate:
         from sweden_crs_transformations.transformation._transformer import _Transformer
-        sourceCoordinateProjection: CrsProjection = sourceCoordinate.get_crs_projection()
-        if(not(
-            (sourceCoordinateProjection.is_sweref99() or sourceCoordinateProjection.is_rt90())
+        source_coordinate_projection: CrsProjection = source_coordinate.get_crs_projection()
+        if (not (
+            (source_coordinate_projection.is_sweref99() or source_coordinate_projection.is_rt90())
             and
-            (finalTargetCrsProjection.is_sweref99() or finalTargetCrsProjection.is_rt90())
+            (final_target_crs_projection.is_sweref99() or final_target_crs_projection.is_rt90())
         )):
-            _Transformer._throwExceptionMessage(sourceCoordinate.get_crs_projection(), finalTargetCrsProjection)
+            _Transformer._throwExceptionMessage(source_coordinate.get_crs_projection(), final_target_crs_projection)
 
-        intermediateCrsProjection = CrsProjection.WGS84
-        intermediateWgs84coordinate = _Transformer.transform(sourceCoordinate, intermediateCrsProjection)
-        return _Transformer.transform(intermediateWgs84coordinate, finalTargetCrsProjection)
+        intermediate_crs_projection = CrsProjection.WGS84
+        intermediate_wgs84_coordinate = _Transformer.transform(source_coordinate, intermediate_crs_projection)
+        return _Transformer.transform(intermediate_wgs84_coordinate, final_target_crs_projection)

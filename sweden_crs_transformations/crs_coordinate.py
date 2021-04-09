@@ -1,4 +1,5 @@
 ﻿from __future__ import annotations
+
 # without the above "from __future__ import annotations" a method in the class CrsCoordinate
 # can not define (with type hinting)  a method to return a CrsCoordinate i.e. an instance from the same class
 
@@ -15,51 +16,52 @@
 """
 from sweden_crs_transformations.crs_projection import CrsProjection
 
+
 class CrsCoordinate:
     """
     | Coordinate, defined by the three parameters for the factory methods.
     """
 
     def __init__(self,
-        crsProjection: CrsProjection,
-        yLatitude: float,
-        xLongitude: float
-    ):
+                 crs_projection: CrsProjection,
+                 y_latitude: float,
+                 x_longitude: float
+                 ):
         """
         | Client code can instead use the factory class methods.
         """
-        self._crsProjection = crsProjection
-        self._yLatitude = yLatitude
-        self._xLongitude = xLongitude
+        self._crsProjection = crs_projection
+        self._y_latitude = y_latitude
+        self._x_longitude = x_longitude
 
     @classmethod
     def create_coordinate(cls,
-        crsProjection: CrsProjection,
-        yLatitude: float,
-        xLongitude: float
-    ) -> CrsCoordinate:
+                          crs_projection: CrsProjection,
+                          y_latitude: float,
+                          x_longitude: float
+                          ) -> CrsCoordinate:
         """
         | Factory method for creating an instance.
         | :param crsProjection: represents the coordinate reference system that defines the location together with the other two parameters
         | :param yLatitude: the coordinate position value representing the latitude or Y or Northing
         | :param xLongitude: the coordinate position value representing the longitude or X or Easting
         """
-        return cls(crsProjection, yLatitude, xLongitude)
+        return cls(crs_projection, y_latitude, x_longitude)
 
     @classmethod
     def create_coordinate_by_epsg_number(cls,
-        epsgNumber: int,
-        yLatitude: float,
-        xLongitude: float
-    ) -> CrsCoordinate:
+                                         epsg_number: int,
+                                         y_latitude: float,
+                                         x_longitude: float
+                                         ) -> CrsCoordinate:
         """
         | Factory method for creating an instance.
         | :param epsgNumber: represents the coordinate reference system that defines the location together with the other two parameters
         | :param yLatitude: the coordinate position value representing the latitude or Y or Northing
         | :param xLongitude: the coordinate position value representing the longitude or X or Easting
         """
-        crsProjection: CrsProjection = CrsProjection.get_crs_projection_by_epsg_number(epsgNumber)
-        return cls.create_coordinate(crsProjection, yLatitude, xLongitude)
+        crs_projection: CrsProjection = CrsProjection.get_crs_projection_by_epsg_number(epsg_number)
+        return cls.create_coordinate(crs_projection, y_latitude, x_longitude)
 
     def get_crs_projection(self) -> CrsProjection:
         """
@@ -71,30 +73,29 @@ class CrsCoordinate:
         """
         | The coordinate value representing the longitude or X or Easting.
         """
-        return self._xLongitude
+        return self._x_longitude
 
     def get_latitude_y(self) -> float:
         """
         | The coordinate value representing the latitude or Y or Northing.
         """
-        return self._yLatitude
+        return self._y_latitude
 
-    def transform(self, targetCrsProjection: CrsProjection) -> CrsCoordinate:
+    def transform(self, target_crs_projection: CrsProjection) -> CrsCoordinate:
         """
         | Transforms the coordinate to another coordinate reference system
         | :param targetCrsProjection: the coordinate reference system that you want to transform to
         """
         from sweden_crs_transformations.transformation._transformer import _Transformer
-        return _Transformer.transform(self, targetCrsProjection)
+        return _Transformer.transform(self, target_crs_projection)
 
-    def transform_by_epsg_number(self, targetEpsgNumber: int) -> CrsCoordinate:
+    def transform_by_epsg_number(self, target_epsg_number: int) -> CrsCoordinate:
         """
         | Transforms the coordinate to another coordinate reference system
         | :param targetEpsgNumber: the coordinate reference system that you want to transform to
         """
-        targetCrsProjection: CrsProjection = CrsProjection.get_crs_projection_by_epsg_number(targetEpsgNumber)
-        return self.transform(targetCrsProjection)
-
+        target_crs_projection: CrsProjection = CrsProjection.get_crs_projection_by_epsg_number(target_epsg_number)
+        return self.transform(target_crs_projection)
 
     def __str__(self):
         """
@@ -103,14 +104,13 @@ class CrsCoordinate:
         | "CrsCoordinate [ Longitude: 18.059196 , Latitude: 59.330231 , CRS: WGS84 ]"
         """
         crs: str = str(self.get_crs_projection()).upper()
-        isWgs84: bool = self.get_crs_projection().is_wgs84()
-        yOrLatitude: str = "Y"
-        xOrLongitude: str = "X"
-        if (isWgs84):
-            yOrLatitude = "Latitude"
-            xOrLongitude = "Longitude"
-        return f"CrsCoordinate [ {yOrLatitude}: {self.get_latitude_y()} , {xOrLongitude}: {self.get_longitude_x()} , CRS: {crs} ]"
-
+        is_wgs84: bool = self.get_crs_projection().is_wgs84()
+        y_or_latitude: str = "Y"
+        x_or_longitude: str = "X"
+        if is_wgs84:
+            y_or_latitude = "Latitude"
+            x_or_longitude = "Longitude"
+        return f"CrsCoordinate [ {y_or_latitude}: {self.get_latitude_y()} , {x_or_longitude}: {self.get_longitude_x()} , CRS: {crs} ]"
 
     """
     # // ----------------------------------------------------------------------------------------------------------------------
@@ -147,6 +147,5 @@ class CrsCoordinate:
         return !(left == right);
     }
     """
-    #// These five methods above was generated with Visual Studio 2019
+    # // These five methods above was generated with Visual Studio 2019
     # // ----------------------------------------------------------------------------------------------------------------------
-

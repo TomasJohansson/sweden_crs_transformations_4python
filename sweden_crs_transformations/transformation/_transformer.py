@@ -30,56 +30,56 @@ class _Transformer:
     transFormStrategy_From_Sweref99OrRT90_to_WGS84_andThenToRealTarget = _TransFormStrategy_From_Sweref99OrRT90_to_WGS84_andThenToRealTarget()
 
     @staticmethod
-    def transform(sourceCoordinate: CrsCoordinate, targetCrsProjection: CrsProjection) -> CrsCoordinate:
-        if(sourceCoordinate.get_crs_projection() == targetCrsProjection):
-            return sourceCoordinate
+    def transform(source_cordinate: CrsCoordinate, target_crs_projection: CrsProjection) -> CrsCoordinate:
+        if(source_cordinate.get_crs_projection() == target_crs_projection):
+            return source_cordinate
 
         _transFormStrategy: _TransformStrategy = None
 
         # Transform FROM wgs84:
         if(
-            sourceCoordinate.get_crs_projection().is_wgs84()
+            source_cordinate.get_crs_projection().is_wgs84()
             and
-            ( targetCrsProjection.is_sweref99() or targetCrsProjection.is_rt90() )
+            (target_crs_projection.is_sweref99() or target_crs_projection.is_rt90())
         ):
             _transFormStrategy = _Transformer.transformStrategy_From_WGS84_to_SWEREF99_or_RT90
 
         # Transform TO wgs84:
         elif(
-            targetCrsProjection.is_wgs84()
+            target_crs_projection.is_wgs84()
             and
-            ( sourceCoordinate.get_crs_projection().is_sweref99() or sourceCoordinate.get_crs_projection().is_rt90() )
+            (source_cordinate.get_crs_projection().is_sweref99() or source_cordinate.get_crs_projection().is_rt90())
         ):
             _transFormStrategy = _Transformer.transformStrategy_From_SWEREF99_or_RT90_to_WGS84
 
         # Transform between two non-wgs84:
         elif(
-            ( sourceCoordinate.get_crs_projection().is_sweref99() or sourceCoordinate.get_crs_projection().is_rt90() )
+            (source_cordinate.get_crs_projection().is_sweref99() or source_cordinate.get_crs_projection().is_rt90())
             and
-            ( targetCrsProjection.is_sweref99() or targetCrsProjection.is_rt90() )
+            (target_crs_projection.is_sweref99() or target_crs_projection.is_rt90())
         ):
             # the only direct transform supported is to/from WGS84, so therefore first transform to wgs84
             _transFormStrategy = _Transformer.transFormStrategy_From_Sweref99OrRT90_to_WGS84_andThenToRealTarget
 
-        return _Transformer._transform_with_explicit_strategy(_transFormStrategy, sourceCoordinate, targetCrsProjection)
+        return _Transformer._transform_with_explicit_strategy(_transFormStrategy, source_cordinate, target_crs_projection)
 
 
     # this method is not intended for public usage
     @staticmethod
     def _transform_with_explicit_strategy(
-        _transFormStrategy: _TransformStrategy,
-        sourceCoordinate: CrsCoordinate,
-        targetCrsProjection: CrsProjection
+        _transform_strategy: _TransformStrategy,
+        source_coordinate: CrsCoordinate,
+        target_crs_projection: CrsProjection
     ) -> CrsCoordinate:
-        if(_transFormStrategy is None):
-            _Transformer._throwExceptionMessage(sourceCoordinate.get_crs_projection(), targetCrsProjection)
+        if(_transform_strategy is None):
+            _Transformer._throwExceptionMessage(source_coordinate.get_crs_projection(), target_crs_projection)
         else:
-            return _transFormStrategy.transform(sourceCoordinate, targetCrsProjection)
+            return _transform_strategy.transform(source_coordinate, target_crs_projection)
 
 
     @staticmethod
     def _throwExceptionMessage(
-        sourceProjection: CrsCoordinate,
-        targetCrsProjection: CrsCoordinate,
+        source_projection: CrsCoordinate,
+        target_crs_projection: CrsCoordinate,
     ):
-        raise ValueError(f"Unhandled source/target projection transformation: {sourceProjection} ==> {targetCrsProjection}")
+        raise ValueError(f"Unhandled source/target projection transformation: {source_projection} ==> {target_crs_projection}")
