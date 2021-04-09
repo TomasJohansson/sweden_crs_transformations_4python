@@ -1,10 +1,11 @@
 ﻿from __future__ import annotations  # this import makes the code in the file less sensitive regarding in which order the classes are defined
 import unittest
 import os
-from typing import List
 
 from sweden_crs_transformations.crs_coordinate import CrsCoordinate
 from sweden_crs_transformations.crs_projection import CrsProjection
+
+# py -3.9 -m unittest tests/coordinate_files/test_transforming_coordinates_from_file.py
 
 class TransformingCoordinatesFromFileTest(unittest.TestCase):
 
@@ -15,7 +16,7 @@ class TransformingCoordinatesFromFileTest(unittest.TestCase):
     # private const string relativePathForFileWith_swedish_crs_transformations = "CoordinateFiles/data/swedish_crs_coordinates.csv";
     # // the project file should use "CopyToOutputDirectory" for the above file
 
-    def readAllLinesFromResourceFile(self) -> List[str]:
+    def readAllLinesFromResourceFile(self) -> list[str]:
         thedirectory = os.path.dirname(os.path.realpath(__file__))
         # print(thedirectory)
         csvFilename = 'swedish_crs_coordinates.csv'
@@ -25,10 +26,8 @@ class TransformingCoordinatesFromFileTest(unittest.TestCase):
         theFile.close()
         return allLines
 
-    def getCoordinates(self, linesFromCsvFile: List[str]) -> List[Coordinates]:
-        # def getCoordinates(linesFromCsvFile: List[str]) -> List:
-        # final List<Coordinates> listOfCoordinates = new ArrayList<Coordinates>();
-        listOfCoordinates: List[Coordinates] = []
+    def getCoordinates(self, linesFromCsvFile: list[str]) -> list[Coordinates]:
+        listOfCoordinates: list[Coordinates] = []
         for i, line in enumerate(linesFromCsvFile):
             # for (int i = 1; i <linesFromCsvFile.size(); i++) { // skipping the first line i.e. starting at index 1
             # String line = linesFromCsvFile.get(i);
@@ -55,10 +54,10 @@ class TransformingCoordinatesFromFileTest(unittest.TestCase):
         """
         listOfCoordinates = self.getCoordinates(linesFromCsvFile)
         self.assertEqual(18, len(listOfCoordinates))
-        problemTransformationResults: List[str] = []
+        problemTransformationResults: list[str] = []
         numberOfTransformations: int = 0
         for listOfCoordinatesWhichRepresentTheSameLocation in listOfCoordinates: #type: Coordinates
-            coordinates: List[CrsCoordinate] = listOfCoordinatesWhichRepresentTheSameLocation.coordinateList
+            coordinates: list[CrsCoordinate] = listOfCoordinatesWhichRepresentTheSameLocation.coordinateList
             for i in range(len(coordinates)):
             # for(int i=0; i<coordinates.size()-1; i++) {
                 # for(int j=i+1; j<coordinates.size(); j++) {
@@ -93,7 +92,7 @@ class TransformingCoordinatesFromFileTest(unittest.TestCase):
     def transform(self,
         sourceCoordinate: CrsCoordinate,
         targetCoordinateExpected: CrsCoordinate,
-        problemTransformationResults: List[str]
+        problemTransformationResults: list[str]
     ):
         targetCrs: CrsProjection = targetCoordinateExpected.get_crs_projection()
         targetCoordinate: CrsCoordinate = sourceCoordinate.transform(targetCrs)
