@@ -1,7 +1,6 @@
 ﻿from __future__ import annotations
 # without the above "from __future__ import annotations" a method in the class CrsCoordinate
 # can not define (with type hinting)  a method to return a CrsCoordinate i.e. an instance from the same class
-from sweden_crs_transformations.crs_projection_factory import CrsProjectionFactory
 
 """
 | Copyright (c) Tomas Johansson , http://www.programmerare.com
