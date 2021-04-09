@@ -1,6 +1,6 @@
-﻿import math as Math
+﻿from typing import Final
+import math as Math
 import sys
-
 from sweden_crs_transformations.mighty_little_geodesy._lat_lon import _LatLon
 from sweden_crs_transformations.mighty_little_geodesy._gauss_kreuger_parameter_object import _GaussKreugerParameterObject
 
@@ -92,21 +92,20 @@ from sweden_crs_transformations.mighty_little_geodesy._gauss_kreuger_parameter_o
 
 class _GaussKreuger:
     """
-    // Immutable class with all fields 'readonly'
-    private readonly double axis; // Semi-major axis of the ellipsoid.
-    private readonly double flattening; // Flattening of the ellipsoid.
-    private readonly double central_meridian; // Central meridian for the projection.
-    private readonly double scale; // Scale on central meridian.
-    private readonly double false_northing; // Offset for origo.
-    private readonly double false_easting; // Offset for origo.
+    | Immutable class with all fields intended to be 'Final'
+    |
+    | PEP 591 -- Adding a final qualifier to typing
+    | https://www.python.org/dev/peps/pep-0591/
+    | https://mypy.readthedocs.io/en/stable/final_attrs.html
+    | https://docs.python.org/3/library/typing.html
     """
     def __init__(self, gkParameter: _GaussKreugerParameterObject):
-        self._axis = gkParameter._axis
-        self._flattening = gkParameter._flattening
-        self._central_meridian = gkParameter._central_meridian
-        self._scale = gkParameter._scale
-        self._false_northing = gkParameter._false_northing
-        self._false_easting = gkParameter._false_easting
+        self._axis: Final[float] = gkParameter._axis
+        self._flattening: Final[float] = gkParameter._flattening
+        self._central_meridian: Final[float] = gkParameter._central_meridian
+        self._scale: Final[float] = gkParameter._scale
+        self._false_northing: Final[float] = gkParameter._false_northing
+        self._false_easting: Final[float] = gkParameter._false_easting
 
     """
     public static GaussKreuger create(GaussKreugerParameterObject gaussKreugerParameterObject) {
