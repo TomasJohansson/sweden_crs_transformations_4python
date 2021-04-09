@@ -101,12 +101,12 @@ class _GaussKreuger:
     private readonly double false_easting; // Offset for origo.
     """
     def __init__(self, gkParameter: _GaussKreugerParameterObject):
-        self.axis = gkParameter._axis
-        self.flattening = gkParameter._flattening
-        self.central_meridian = gkParameter._central_meridian
-        self.scale = gkParameter._scale
-        self.false_northing = gkParameter._false_northing
-        self.false_easting = gkParameter._false_easting
+        self._axis = gkParameter._axis
+        self._flattening = gkParameter._flattening
+        self._central_meridian = gkParameter._central_meridian
+        self._scale = gkParameter._scale
+        self._false_northing = gkParameter._false_northing
+        self._false_easting = gkParameter._false_easting
 
     """
     public static GaussKreuger create(GaussKreugerParameterObject gaussKreugerParameterObject) {
@@ -121,9 +121,9 @@ class _GaussKreuger:
         x_y = [0, 0]
 
         # // Prepare ellipsoid-based stuff.
-        e2: float = self.flattening * (2.0 - self.flattening)
-        n: float = self.flattening / (2.0 - self.flattening)
-        a_roof: float = self.axis / (1.0 + n) * (1.0 + n * n / 4.0 + n * n * n * n / 64.0)
+        e2: float = self._flattening * (2.0 - self._flattening)
+        n: float = self._flattening / (2.0 - self._flattening)
+        a_roof: float = self._axis / (1.0 + n) * (1.0 + n * n / 4.0 + n * n * n * n / 64.0)
         A: float = e2
         B: float = (5.0 * e2 * e2 - e2 * e2 * e2) / 6.0
         C: float = (104.0 * e2 * e2 * e2 - 45.0 * e2 * e2 * e2 * e2) / 120.0
@@ -137,7 +137,7 @@ class _GaussKreuger:
         deg_to_rad: float = Math.pi / 180.0
         phi: float = latitude * deg_to_rad
         lambdaa: float = longitude * deg_to_rad
-        lambda_zero: float = self.central_meridian * deg_to_rad
+        lambda_zero: float = self._central_meridian * deg_to_rad
 
         phi_star: float = phi - Math.sin(phi) * Math.cos(phi) * (A +
                         B * Math.pow(Math.sin(phi), 2) +
@@ -148,17 +148,17 @@ class _GaussKreuger:
         xi_prim: float = Math.atan(Math.tan(phi_star) / Math.cos(delta_lambda))
         eta_prim: float = self._math_atanh(Math.cos(phi_star) * Math.sin(delta_lambda))
 
-        x: float = self.scale * a_roof * (xi_prim +
+        x: float = self._scale * a_roof * (xi_prim +
                                           beta1 * Math.sin(2.0 * xi_prim) * self._math_cosh(2.0 * eta_prim) +
                                           beta2 * Math.sin(4.0 * xi_prim) * self._math_cosh(4.0 * eta_prim) +
                                           beta3 * Math.sin(6.0 * xi_prim) * self._math_cosh(6.0 * eta_prim) +
-                                          beta4 * Math.sin(8.0 * xi_prim) * self._math_cosh(8.0 * eta_prim)) + self.false_northing
+                                          beta4 * Math.sin(8.0 * xi_prim) * self._math_cosh(8.0 * eta_prim)) + self._false_northing
 
-        y: float = self.scale * a_roof * (eta_prim +
+        y: float = self._scale * a_roof * (eta_prim +
                                           beta1 * Math.cos(2.0 * xi_prim) * self._math_sinh(2.0 * eta_prim) +
                                           beta2 * Math.cos(4.0 * xi_prim) * self._math_sinh(4.0 * eta_prim) +
                                           beta3 * Math.cos(6.0 * xi_prim) * self._math_sinh(6.0 * eta_prim) +
-                                          beta4 * Math.cos(8.0 * xi_prim) * self._math_sinh(8.0 * eta_prim)) + self.false_easting
+                                          beta4 * Math.cos(8.0 * xi_prim) * self._math_sinh(8.0 * eta_prim)) + self._false_easting
 
         x_y[0] = round(x * 1000.0) / 1000.0
         x_y[1] = round(y * 1000.0) / 1000.0
@@ -170,12 +170,12 @@ class _GaussKreuger:
 
     def grid_to_geodetic(self, yLatitude: float, xLongitude: float) -> _LatLon:
         lat_lon = [0.0, 0.0]
-        if (self.central_meridian == sys.float_info.min): # Double.MIN_VALUE
+        if (self._central_meridian == sys.float_info.min): # Double.MIN_VALUE
             return _LatLon(lat_lon[0], lat_lon[1])
         # // Prepare ellipsoid-based stuff.
-        e2: float = self.flattening * (2.0 - self.flattening)
-        n: float = self.flattening / (2.0 - self.flattening)
-        a_roof: float = self.axis / (1.0 + n) * (1.0 + n * n / 4.0 + n * n * n * n / 64.0)
+        e2: float = self._flattening * (2.0 - self._flattening)
+        n: float = self._flattening / (2.0 - self._flattening)
+        a_roof: float = self._axis / (1.0 + n) * (1.0 + n * n / 4.0 + n * n * n * n / 64.0)
         delta1: float = n / 2.0 - 2.0 * n * n / 3.0 + 37.0 * n * n * n / 96.0 - n * n * n * n / 360.0
         delta2: float = n * n / 48.0 + n * n * n / 15.0 - 437.0 * n * n * n * n / 1440.0
         delta3: float = 17.0 * n * n * n / 480.0 - 37 * n * n * n * n / 840.0
@@ -188,9 +188,9 @@ class _GaussKreuger:
 
         # // Convert.
         deg_to_rad: float = Math.pi / 180
-        lambda_zero: float = self.central_meridian * deg_to_rad
-        xi: float = (yLatitude - self.false_northing) / (self.scale * a_roof)
-        eta: float = (xLongitude - self.false_easting) / (self.scale * a_roof)
+        lambda_zero: float = self._central_meridian * deg_to_rad
+        xi: float = (yLatitude - self._false_northing) / (self._scale * a_roof)
+        eta: float = (xLongitude - self._false_easting) / (self._scale * a_roof)
         xi_prim: float = (xi -
                           delta1 * Math.sin(2.0 * xi) * self._math_cosh(2.0 * eta) -
                           delta2 * Math.sin(4.0 * xi) * self._math_cosh(4.0 * eta) -

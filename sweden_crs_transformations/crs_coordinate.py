@@ -29,9 +29,9 @@ class CrsCoordinate:
         """
         | Client code can instead use the factory class methods.
         """
-        self.crsProjection = crsProjection
-        self.yLatitude = yLatitude
-        self.xLongitude = xLongitude
+        self._crsProjection = crsProjection
+        self._yLatitude = yLatitude
+        self._xLongitude = xLongitude
 
     @classmethod
     def create_coordinate(cls,
@@ -66,19 +66,19 @@ class CrsCoordinate:
         """
         | The coordinate reference system that defines the location together with the other two properties (LongitudeX and LatitudeY).
         """
-        return self.crsProjection
+        return self._crsProjection
 
     def get_longitude_x(self) -> float:
         """
         | The coordinate value representing the longitude or X or Easting.
         """
-        return self.xLongitude
+        return self._xLongitude
 
     def get_latitude_y(self) -> float:
         """
         | The coordinate value representing the latitude or Y or Northing.
         """
-        return self.yLatitude
+        return self._yLatitude
 
     def transform(self, targetCrsProjection: CrsProjection) -> CrsCoordinate:
         """
