@@ -1,5 +1,5 @@
 ﻿from __future__ import annotations
-
+from typing import Final  # https://www.python.org/dev/peps/pep-0591/
 # without the above "from __future__ import annotations" a method in the class CrsCoordinate
 # can not define (with type hinting)  a method to return a CrsCoordinate i.e. an instance from the same class
 
@@ -30,9 +30,9 @@ class CrsCoordinate:
         """
         | Client code can instead use the factory class methods.
         """
-        self._crsProjection = crs_projection
-        self._y_latitude = y_latitude
-        self._x_longitude = x_longitude
+        self._crsProjection: Final[CrsProjection] = crs_projection
+        self._y_latitude: Final[float] = y_latitude
+        self._x_longitude: Final[float] = x_longitude
 
     @classmethod
     def create_coordinate(cls,
