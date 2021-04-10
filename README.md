@@ -1,27 +1,8 @@
 # sweden_crs_transformations_4python
 'sweden_crs_transformations_4python' is a Python library ported from the
-[C#.NET library 'sweden_crs_transformations_4net'](https://github.com/TomasJohansson/sweden_crs_transformations_4net/)
-for transforming geographic coordinates between the following three kind of CRS (Coordinate Reference Systems): WGS84, SWEREF99 and RT90.
+[C#.NET library 'sweden_crs_transformations_4net'](https://github.com/TomasJohansson/sweden_crs_transformations_4net/) and it is used for transforming geographic coordinates between the following three kind of CRS (Coordinate Reference Systems):  
+WGS84, SWEREF99 and RT90.  
 (13 versions of SWEREF99, and 6 versions of RT90)
-
-That C#.NET library ('sweden_crs_transformations_4net') is
-based on [C# library MightyLittleGeodesy](https://github.com/bjornsallarp/MightyLittleGeodesy/) which in turn is based on a [javascript library by Arnold Andreasson](https://latlong.mellifica.se/).
-
-The main part of 'MightyLittleGeodesy' which has been kept (to the C# library 'sweden_crs_transformations_4net') is the mathematical calculations in the class 'GaussKreuger.cs'.
-Regarding the port to this 'sweden_crs_transformations_4python' then of course there had to be more modifications since Python has differences in syntax compared with C#, although
-the mathematical logic has still been kept from the original 'MightyLittleGeodesy' class 'GaussKreuger.cs'.
-
-# PyPI release
-
-No, not yet.
-
-# Implementations in other programming languages
-Currently I have implemented this Python library also with the following programming languages and github repositories:
-C#.NET: [sweden_crs_transformations_4net](https://github.com/TomasJohansson/sweden_crs_transformations_4net)
-Java/Scala: [sweden_crs_transformations_4jvm](https://github.com/TomasJohansson/sweden_crs_transformations_4jvm)
-TypeScript: [sweden_crs_transformations_4typescript](https://github.com/TomasJohansson/sweden_crs_transformations_4typescript)
-Dart: [sweden_crs_transformations_4dart](https://github.com/TomasJohansson/sweden_crs_transformations_4dart)
-
 
 # Code example
 ```python
@@ -78,17 +59,25 @@ CrsCoordinate [ Y: 6587459.595 , X: 1244251.702 , CRS: RT90_5_0_GON_O(EPSG:3024)
 
 # Accuracy of the transformations
 
-This Python library is a port of the [C#.NET library 'sweden_crs_transformations_4net'](https://github.com/TomasJohansson/sweden_crs_transformations_4net/) and therefore it is using the same file "swedish_crs_coordinates.csv" as the C# library, for the regression testing of the Python implementation.
-There are 18 rows with coordinates in that file, and it will lead to 108 transformations being done when executing all Python tests, e.g. with the command 'py -3.9 -m unittest tests/coordinate_files/test_transforming_coordinates_from_file.py'.
-The coordinate values in the file have been created as median values from six different Java implementations of CRS transformations.
+This Python library is a port of the [C#.NET library 'sweden_crs_transformations_4net'](https://github.com/TomasJohansson/sweden_crs_transformations_4net/) and therefore it is using the same file "swedish_crs_coordinates.csv" as the C# library, for the regression testing of the Python implementation.  
+There are 18 rows with coordinates in that file, and it will lead to 108 transformations being done when executing all Python tests, e.g. with the command 'py -3.9 -m unittest tests/coordinate_files/test_transforming_coordinates_from_file.py'.  
+The coordinate values in the file have been created as median values from six different Java implementations of CRS transformations.  
 For more information about the origin of the data file being used, please see the webpage linked above for the C# library 'sweden_crs_transformations_4net'.
+
+# Origin of the mathematics used in the library
+
+This Python library is ported from the C#.NET library ('sweden_crs_transformations_4net') which is based on [C# library MightyLittleGeodesy](https://github.com/bjornsallarp/MightyLittleGeodesy/) which in turn is based on a [javascript library by Arnold Andreasson](https://latlong.mellifica.se/).  
+The main part of 'MightyLittleGeodesy' which has been kept (to the C# library 'sweden_crs_transformations_4net') is the mathematical calculations in the class 'GaussKreuger.cs'.  
+Regarding the port to this Python version 'sweden_crs_transformations_4python' then of course there had to be more modifications since Python has differences in syntax compared with C#, although
+the mathematical logic has still been kept from the original 'MightyLittleGeodesy' class 'GaussKreuger.cs'.
+
 
 # License
 
 MIT.
 'sweden_crs_transformations_4python' is ported from the C# library 'sweden_crs_transformations_4net'
-which is also licensed with MIT since it started as a fork of the C# library 'MightyLittleGeodesy' which is licensed with the MIT license. (see below).
-[License text for 'sweden_crs_transformations_4python'](https://github.com/TomasJohansson/sweden_crs_transformations_4python/blob/dart_SwedenCrsTransformations/LICENSE)
+which is also licensed with MIT since it started as a fork of the C# library 'MightyLittleGeodesy' which is licensed with the MIT license. (see below).  
+[License text for 'sweden_crs_transformations_4python'](https://github.com/TomasJohansson/sweden_crs_transformations_4python/blob/python_SwedenCrsTransformations/LICENSE)
 
 # License for the original C# repository [MightyLittleGeodesy](https://github.com/bjornsallarp/MightyLittleGeodesy/)
 
