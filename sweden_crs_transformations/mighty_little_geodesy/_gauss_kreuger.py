@@ -1,5 +1,5 @@
 ﻿from typing import Final
-import math as Math
+import math
 import sys
 from sweden_crs_transformations.mighty_little_geodesy._lat_lon import _LatLon
 from sweden_crs_transformations.mighty_little_geodesy._gauss_kreuger_parameter_object import _GaussKreugerParameterObject
@@ -134,31 +134,31 @@ class _GaussKreuger:
         beta4: float = 49561.0 * n * n * n * n / 161280.0
 
         # // Convert.
-        deg_to_rad: float = Math.pi / 180.0
+        deg_to_rad: float = math.pi / 180.0
         phi: float = latitude * deg_to_rad
         lambdaa: float = longitude * deg_to_rad
         lambda_zero: float = self._central_meridian * deg_to_rad
 
-        phi_star: float = phi - Math.sin(phi) * Math.cos(phi) * (A +
-                        B * Math.pow(Math.sin(phi), 2) +
-                        C * Math.pow(Math.sin(phi), 4) +
-                        D * Math.pow(Math.sin(phi), 6))
+        phi_star: float = phi - math.sin(phi) * math.cos(phi) * (A +
+                        B * math.pow(math.sin(phi), 2) +
+                        C * math.pow(math.sin(phi), 4) +
+                        D * math.pow(math.sin(phi), 6))
 
         delta_lambda: float = lambdaa - lambda_zero
-        xi_prim: float = Math.atan(Math.tan(phi_star) / Math.cos(delta_lambda))
-        eta_prim: float = self._math_atanh(Math.cos(phi_star) * Math.sin(delta_lambda))
+        xi_prim: float = math.atan(math.tan(phi_star) / math.cos(delta_lambda))
+        eta_prim: float = self._math_atanh(math.cos(phi_star) * math.sin(delta_lambda))
 
         x: float = self._scale * a_roof * (xi_prim +
-                                          beta1 * Math.sin(2.0 * xi_prim) * self._math_cosh(2.0 * eta_prim) +
-                                          beta2 * Math.sin(4.0 * xi_prim) * self._math_cosh(4.0 * eta_prim) +
-                                          beta3 * Math.sin(6.0 * xi_prim) * self._math_cosh(6.0 * eta_prim) +
-                                          beta4 * Math.sin(8.0 * xi_prim) * self._math_cosh(8.0 * eta_prim)) + self._false_northing
+                                          beta1 * math.sin(2.0 * xi_prim) * self._math_cosh(2.0 * eta_prim) +
+                                          beta2 * math.sin(4.0 * xi_prim) * self._math_cosh(4.0 * eta_prim) +
+                                          beta3 * math.sin(6.0 * xi_prim) * self._math_cosh(6.0 * eta_prim) +
+                                          beta4 * math.sin(8.0 * xi_prim) * self._math_cosh(8.0 * eta_prim)) + self._false_northing
 
         y: float = self._scale * a_roof * (eta_prim +
-                                          beta1 * Math.cos(2.0 * xi_prim) * self._math_sinh(2.0 * eta_prim) +
-                                          beta2 * Math.cos(4.0 * xi_prim) * self._math_sinh(4.0 * eta_prim) +
-                                          beta3 * Math.cos(6.0 * xi_prim) * self._math_sinh(6.0 * eta_prim) +
-                                          beta4 * Math.cos(8.0 * xi_prim) * self._math_sinh(8.0 * eta_prim)) + self._false_easting
+                                          beta1 * math.cos(2.0 * xi_prim) * self._math_sinh(2.0 * eta_prim) +
+                                          beta2 * math.cos(4.0 * xi_prim) * self._math_sinh(4.0 * eta_prim) +
+                                          beta3 * math.cos(6.0 * xi_prim) * self._math_sinh(6.0 * eta_prim) +
+                                          beta4 * math.cos(8.0 * xi_prim) * self._math_sinh(8.0 * eta_prim)) + self._false_easting
 
         x_y[0] = round(x * 1000.0) / 1000.0
         x_y[1] = round(y * 1000.0) / 1000.0
@@ -187,42 +187,42 @@ class _GaussKreuger:
         Dstar: float = -(4279.0 * e2 * e2 * e2 * e2) / 1260.0
 
         # // Convert.
-        deg_to_rad: float = Math.pi / 180
+        deg_to_rad: float = math.pi / 180
         lambda_zero: float = self._central_meridian * deg_to_rad
         xi: float = (yLatitude - self._false_northing) / (self._scale * a_roof)
         eta: float = (xLongitude - self._false_easting) / (self._scale * a_roof)
         xi_prim: float = (xi -
-                          delta1 * Math.sin(2.0 * xi) * self._math_cosh(2.0 * eta) -
-                          delta2 * Math.sin(4.0 * xi) * self._math_cosh(4.0 * eta) -
-                          delta3 * Math.sin(6.0 * xi) * self._math_cosh(6.0 * eta) -
-                          delta4 * Math.sin(8.0 * xi) * self._math_cosh(8.0 * eta))
+                          delta1 * math.sin(2.0 * xi) * self._math_cosh(2.0 * eta) -
+                          delta2 * math.sin(4.0 * xi) * self._math_cosh(4.0 * eta) -
+                          delta3 * math.sin(6.0 * xi) * self._math_cosh(6.0 * eta) -
+                          delta4 * math.sin(8.0 * xi) * self._math_cosh(8.0 * eta))
 
         eta_prim: float = (eta -
-                           delta1 * Math.cos(2.0 * xi) * self._math_sinh(2.0 * eta) -
-                           delta2 * Math.cos(4.0 * xi) * self._math_sinh(4.0 * eta) -
-                           delta3 * Math.cos(6.0 * xi) * self._math_sinh(6.0 * eta) -
-                           delta4 * Math.cos(8.0 * xi) * self._math_sinh(8.0 * eta))
+                           delta1 * math.cos(2.0 * xi) * self._math_sinh(2.0 * eta) -
+                           delta2 * math.cos(4.0 * xi) * self._math_sinh(4.0 * eta) -
+                           delta3 * math.cos(6.0 * xi) * self._math_sinh(6.0 * eta) -
+                           delta4 * math.cos(8.0 * xi) * self._math_sinh(8.0 * eta))
 
-        phi_star: float = Math.asin(Math.sin(xi_prim) / self._math_cosh(eta_prim))
-        delta_lambda: float = Math.atan(self._math_sinh(eta_prim) / Math.cos(xi_prim))
+        phi_star: float = math.asin(math.sin(xi_prim) / self._math_cosh(eta_prim))
+        delta_lambda: float = math.atan(self._math_sinh(eta_prim) / math.cos(xi_prim))
         lon_radian: float = lambda_zero + delta_lambda
-        lat_radian: float = (phi_star + Math.sin(phi_star) * Math.cos(phi_star) *
+        lat_radian: float = (phi_star + math.sin(phi_star) * math.cos(phi_star) *
                         (Astar +
-                         Bstar * Math.pow(Math.sin(phi_star), 2) +
-                         Cstar * Math.pow(Math.sin(phi_star), 4) +
-                         Dstar * Math.pow(Math.sin(phi_star), 6)))
+                         Bstar * math.pow(math.sin(phi_star), 2) +
+                         Cstar * math.pow(math.sin(phi_star), 4) +
+                         Dstar * math.pow(math.sin(phi_star), 6)))
 
-        lat_lon[0] = lat_radian * 180.0 / Math.pi
-        lat_lon[1] = lon_radian * 180.0 / Math.pi
+        lat_lon[0] = lat_radian * 180.0 / math.pi
+        lat_lon[1] = lon_radian * 180.0 / math.pi
         latLon = _LatLon(lat_lon[0], lat_lon[1])
         return latLon
 
 
     def _math_sinh(self, value: float) -> float:
-        return 0.5 * (Math.exp(value) - Math.exp(-value))
+        return 0.5 * (math.exp(value) - math.exp(-value))
 
     def _math_cosh(self, value: float) -> float:
-        return 0.5 * (Math.exp(value) + Math.exp(-value))
+        return 0.5 * (math.exp(value) + math.exp(-value))
 
     def _math_atanh(self, value: float) -> float:
-        return 0.5 * Math.log((1.0 + value) / (1.0 - value))
+        return 0.5 * math.log((1.0 + value) / (1.0 - value))
