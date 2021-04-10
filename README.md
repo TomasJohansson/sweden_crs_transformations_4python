@@ -4,6 +4,16 @@
 WGS84, SWEREF99 and RT90.  
 (13 versions of SWEREF99, and 6 versions of RT90)
 
+# PyPI releases
+https://pypi.org/project/sweden-crs-transformations/
+
+# Implementations in other programming languages  
+Currently I have implemented this Python library also with the following programming languages and github repositories:  
+C#.NET: [sweden_crs_transformations_4net](https://github.com/TomasJohansson/sweden_crs_transformations_4net)  
+Java/Scala: [sweden_crs_transformations_4jvm](https://github.com/TomasJohansson/sweden_crs_transformations_4jvm)  
+TypeScript: [sweden_crs_transformations_4typescript](https://github.com/TomasJohansson/sweden_crs_transformations_4typescript)  
+Dart: [sweden_crs_transformations_4dart](https://github.com/TomasJohansson/sweden_crs_transformations_4dart)  
+
 # Code example
 ```python
 from sweden_crs_transformations.crs_projection import CrsProjection
