@@ -3,4 +3,4 @@ __all__ = ["crs_projection", "crs_coordinate"]
 
 __author__ = """Tomas Johansson"""
 __email__ = 'pypi@programmerare.com'
-__version__ = '0.1.0'
+__version__ = '0.9.0'
