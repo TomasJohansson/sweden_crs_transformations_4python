@@ -1,10 +1,4 @@
-﻿from __future__ import annotations
-from typing import Final  # https://www.python.org/dev/peps/pep-0591/
-
-# without the above "from __future__ import annotations" a method in the class CrsCoordinate
-# can not define (with type hinting)  a method to return a CrsCoordinate i.e. an instance from the same class
-
-"""
+﻿"""
 | Copyright (c) Tomas Johansson , http://www.programmerare.com
 | The code in this library is licensed with MIT.
 | The library is based on the C#.NET library 'sweden_crs_transformations_4net' (https://github.com/TomasJohansson/sweden_crs_transformations_4net)
@@ -24,23 +18,23 @@ class CrsCoordinate:
     """
 
     def __init__(self,
-                 crs_projection: CrsProjection,
-                 y_latitude: float,
-                 x_longitude: float
+                 crs_projection,
+                 y_latitude,
+                 x_longitude
                  ):
         """
         | Client code can instead use the factory class methods.
         """
-        self._crsProjection: Final[CrsProjection] = crs_projection
-        self._y_latitude: Final[float] = y_latitude
-        self._x_longitude: Final[float] = x_longitude
+        self._crsProjection = crs_projection
+        self._y_latitude = y_latitude
+        self._x_longitude = x_longitude
 
     @classmethod
     def create_coordinate(cls,
-                          crs_projection: CrsProjection,
-                          y_latitude: float,
-                          x_longitude: float
-                          ) -> CrsCoordinate:
+                          crs_projection,
+                          y_latitude,
+                          x_longitude
+                          ) :  # type: CrsCoordinate
         """
         | Factory method for creating an instance.
         :param crs_projection: represents the coordinate reference system that defines the location together with the other two parameters
@@ -52,10 +46,10 @@ class CrsCoordinate:
 
     @classmethod
     def create_coordinate_by_epsg_number(cls,
-                                         epsg_number: int,
-                                         y_latitude: float,
-                                         x_longitude: float
-                                         ) -> CrsCoordinate:
+                                         epsg_number,
+                                         y_latitude,
+                                         x_longitude
+                                         ) :  # type: CrsCoordinate
         """
         | Factory method for creating an instance.
         :param epsg_number: represents the coordinate reference system that defines the location together with the other two parameters
@@ -63,28 +57,28 @@ class CrsCoordinate:
         :param x_longitude: the coordinate position value representing the longitude or X or Easting
         :return: a coordinate (CrsCoordinate)
         """
-        crs_projection: CrsProjection = CrsProjection.get_crs_projection_by_epsg_number(epsg_number)
+        crs_projection = CrsProjection.get_crs_projection_by_epsg_number(epsg_number)
         return cls.create_coordinate(crs_projection, y_latitude, x_longitude)
 
-    def get_crs_projection(self) -> CrsProjection:
+    def get_crs_projection(self) :  # type: CrsProjection
         """
         | The coordinate reference system that defines the location together with the other two properties (LongitudeX and LatitudeY).
         """
         return self._crsProjection
 
-    def get_longitude_x(self) -> float:
+    def get_longitude_x(self) :  # type: float
         """
         | The coordinate value representing the longitude or X or Easting.
         """
         return self._x_longitude
 
-    def get_latitude_y(self) -> float:
+    def get_latitude_y(self) :  # type: float
         """
         | The coordinate value representing the latitude or Y or Northing.
         """
         return self._y_latitude
 
-    def transform(self, target_crs_projection: CrsProjection) -> CrsCoordinate:
+    def transform(self, target_crs_projection) :  # type: CrsCoordinate
         """
         | Transforms the coordinate to another coordinate reference system
         :param target_crs_projection: the coordinate reference system that you want to transform to
@@ -93,13 +87,13 @@ class CrsCoordinate:
         from sweden_crs_transformations.transformation._transformer import _Transformer
         return _Transformer.transform(self, target_crs_projection)
 
-    def transform_by_epsg_number(self, target_epsg_number: int) -> CrsCoordinate:
+    def transform_by_epsg_number(self, target_epsg_number) :  # type: CrsCoordinate
         """
         | Transforms the coordinate to another coordinate reference system
         :param target_epsg_number: the coordinate reference system that you want to transform to
         :return: a coordinate (CrsCoordinate)
         """
-        target_crs_projection: CrsProjection = CrsProjection.get_crs_projection_by_epsg_number(target_epsg_number)
+        target_crs_projection = CrsProjection.get_crs_projection_by_epsg_number(target_epsg_number)
         return self.transform(target_crs_projection)
 
     def __str__(self):
@@ -108,10 +102,10 @@ class CrsCoordinate:
         | "CrsCoordinate [ X: 153369.673 , Y: 6579457.649 , CRS: SWEREF_99_18_00 ]"
         | "CrsCoordinate [ Longitude: 18.059196 , Latitude: 59.330231 , CRS: WGS84 ]"
         """
-        crs: str = str(self.get_crs_projection()).upper()
-        is_wgs84: bool = self.get_crs_projection().is_wgs84()
-        y_or_latitude: str = "Y"
-        x_or_longitude: str = "X"
+        crs = str(self.get_crs_projection()).upper()
+        is_wgs84 = self.get_crs_projection().is_wgs84()
+        y_or_latitude = "Y"
+        x_or_longitude = "X"
         if is_wgs84:
             y_or_latitude = "Latitude"
             x_or_longitude = "Longitude"

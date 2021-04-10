@@ -1,5 +1,4 @@
-﻿from __future__ import annotations  # this import makes the code in the file less sensitive regarding in which order the classes are defined
-import unittest
+﻿import unittest
 import os
 
 from sweden_crs_transformations.crs_coordinate import CrsCoordinate
@@ -17,7 +16,7 @@ class TransformingCoordinatesFromFileTest(unittest.TestCase):
     # private const string relativePathForFileWith_swedish_crs_transformations = "CoordinateFiles/data/swedish_crs_coordinates.csv";
     # // the project file should use "CopyToOutputDirectory" for the above file
 
-    def readAllLinesFromResourceFile(self) -> list[str]:
+    def readAllLinesFromResourceFile(self) :  # type: list[str]
         thedirectory = os.path.dirname(os.path.realpath(__file__))
         # print(thedirectory)
         csvFilename = 'swedish_crs_coordinates.csv'
@@ -27,8 +26,8 @@ class TransformingCoordinatesFromFileTest(unittest.TestCase):
         theFile.close()
         return allLines
 
-    def getCoordinates(self, linesFromCsvFile: list[str]) -> list[Coordinates]:
-        listOfCoordinates: list[Coordinates] = []
+    def getCoordinates(self, linesFromCsvFile) :  # type: list[Coordinates]
+        listOfCoordinates = []
         for i, line in enumerate(linesFromCsvFile):
             # for (int i = 1; i <linesFromCsvFile.size(); i++) { // skipping the first line i.e. starting at index 1
             # String line = linesFromCsvFile.get(i);
@@ -55,10 +54,10 @@ class TransformingCoordinatesFromFileTest(unittest.TestCase):
         """
         listOfCoordinates = self.getCoordinates(linesFromCsvFile)
         self.assertEqual(18, len(listOfCoordinates))
-        problemTransformationResults: list[str] = []
-        numberOfTransformations: int = 0
+        problemTransformationResults = []
+        numberOfTransformations = 0
         for listOfCoordinatesWhichRepresentTheSameLocation in listOfCoordinates: #type: Coordinates
-            coordinates: list[CrsCoordinate] = listOfCoordinatesWhichRepresentTheSameLocation.coordinateList
+            coordinates = listOfCoordinatesWhichRepresentTheSameLocation.coordinateList
             for i in range(len(coordinates)):
             # for(int i=0; i<coordinates.size()-1; i++) {
                 # for(int j=i+1; j<coordinates.size(); j++) {
@@ -91,13 +90,13 @@ class TransformingCoordinatesFromFileTest(unittest.TestCase):
 
 
     def transform(self,
-        sourceCoordinate: CrsCoordinate,
-        targetCoordinateExpected: CrsCoordinate,
-        problemTransformationResults: list[str]
+        sourceCoordinate,
+        targetCoordinateExpected,
+        problemTransformationResults
     ):
-        targetCrs: CrsProjection = targetCoordinateExpected.get_crs_projection()
-        targetCoordinate: CrsCoordinate = sourceCoordinate.transform(targetCrs)
-        isTargetEpsgWgs84: bool = targetCrs.is_wgs84()
+        targetCrs = targetCoordinateExpected.get_crs_projection()
+        targetCoordinate = sourceCoordinate.transform(targetCrs)
+        isTargetEpsgWgs84 = targetCrs.is_wgs84()
         # double maxDifference = isTargetEpsgWgs84 ? 0.000002 : 0.2;   // fails, Epsg 3022 ==> 4326 , diffLongitude 2.39811809521484E-06
         # double maxDifference = isTargetEpsgWgs84 ? 0.000003 : 0.1;     // fails, Epsg 4326 ==> 3022 , diffLongitude 0.117090131156147
         maxDifference = 0.000003 if isTargetEpsgWgs84 else 0.2  # the other (i.e. non-WGS84) are using meter as unit, so 0.2 is just two decimeters difference
@@ -105,18 +104,18 @@ class TransformingCoordinatesFromFileTest(unittest.TestCase):
         diffLatitude = abs((targetCoordinate.get_latitude_y() - targetCoordinateExpected.get_latitude_y()))
 
         if (diffLongitude > maxDifference or diffLatitude > maxDifference):
-            problem = f"""
-                "Projection {sourceCoordinate.get_crs_projection()} ==> {targetCoordinateExpected.get_crs_projection()} ,
-                diffLongitude {diffLongitude}  , diffLatitude {diffLatitude}"
-                "sourceCoordinate xLongitude/yLatitude: {sourceCoordinate.get_longitude_x()}/{sourceCoordinate.get_latitude_y()}"
-                "targetCoordinate xLongitude/yLatitude: {targetCoordinate.get_longitude_x()}/{targetCoordinate.get_latitude_y()}"
-                "targetCoordinateExpected xLongitude/yLatitude: {targetCoordinateExpected.get_longitude_x()}/{targetCoordinateExpected.get_latitude_y()}"
-            """
-            # problem = "TODO python 2.7"  # no not really needed ... if there is a problem then e.g. python 3.9 can be used for seeing the formatted message with above formatted string
+            # problem = f"""
+            #     "Projection {sourceCoordinate.get_crs_projection()} ==> {targetCoordinateExpected.get_crs_projection()} ,
+            #     diffLongitude {diffLongitude}  , diffLatitude {diffLatitude}"
+            #     "sourceCoordinate xLongitude/yLatitude: {sourceCoordinate.get_longitude_x()}/{sourceCoordinate.get_latitude_y()}"
+            #     "targetCoordinate xLongitude/yLatitude: {targetCoordinate.get_longitude_x()}/{targetCoordinate.get_latitude_y()}"
+            #     "targetCoordinateExpected xLongitude/yLatitude: {targetCoordinateExpected.get_longitude_x()}/{targetCoordinateExpected.get_latitude_y()}"
+            # """
+            problem = "TODO python 2.7"  # no not really needed ... if there is a problem then e.g. python 3.9 can be used for seeing the formatted message with above formatted string
             problemTransformationResults.append(problem)
 
 class Coordinates:
-    def __init__(self, lineFromFile: str):
+    def __init__(self, lineFromFile):
         array = lineFromFile.split(TransformingCoordinatesFromFileTest.columnSeparator)
         self.coordinateList = [
             # Note that the order of the parameters in the input file (with its lines being used here)

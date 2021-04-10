@@ -25,7 +25,7 @@ class CrsProjectionTest(unittest.TestCase):
             CrsProjection.RT90_5_0_GON_O, CrsProjection.RT90_5_0_GON_V, CrsProjection.RT90_7_5_GON_V
         }
 
-        self._allCrsProjections: list[CrsProjection] = CrsProjection.get_all_crs_projections()
+        self._allCrsProjections = CrsProjection.get_all_crs_projections()
 
 
     def test_get_epsg_number(self):
@@ -112,7 +112,7 @@ class CrsProjectionTest(unittest.TestCase):
     def test_CreateCoordinate(self):
         x = 22.5
         y = 62.5
-        crsCoordinate: CrsCoordinate = CrsProjection.SWEREF_99_TM.create_coordinate(y, x)
+        crsCoordinate = CrsProjection.SWEREF_99_TM.create_coordinate(y, x)
         self.assertEqual(CrsProjectionTest.epsgNumberForSweref99tm, crsCoordinate.get_crs_projection().get_epsg_number())
         self.assertEqual(CrsProjection.SWEREF_99_TM, crsCoordinate.get_crs_projection())
         delta = 0.000001
@@ -144,7 +144,7 @@ class CrsProjectionTest(unittest.TestCase):
         )
 
     def get_number_of_projections(self, mylambda):
-        res: Iterator = filter(mylambda, self._allCrsProjections) # from typing import Iterator
+        res = filter(mylambda, self._allCrsProjections) # from typing import Iterator
         lis = list(res)
         return len(lis)
 
@@ -169,5 +169,5 @@ class CrsProjectionTest(unittest.TestCase):
 
     def test_verify_that_all_projections_can_be_retrieved_by_its_epsg_number(self):
         for crsProjection in self._allCrsProjections:
-            crsProj: CrsProjection = CrsProjection.get_crs_projection_by_epsg_number(crsProjection.get_epsg_number())
+            crsProj = CrsProjection.get_crs_projection_by_epsg_number(crsProjection.get_epsg_number())
             self.assertEqual(crsProjection, crsProj)

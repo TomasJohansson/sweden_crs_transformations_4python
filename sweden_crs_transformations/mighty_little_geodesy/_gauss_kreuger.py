@@ -1,5 +1,4 @@
-﻿from typing import Final
-import math
+﻿import math
 import sys
 from sweden_crs_transformations.mighty_little_geodesy._lat_lon import _LatLon
 from sweden_crs_transformations.mighty_little_geodesy._gauss_kreuger_parameter_object import _GaussKreugerParameterObject
@@ -92,21 +91,14 @@ from sweden_crs_transformations.mighty_little_geodesy._gauss_kreuger_parameter_o
 
 
 class _GaussKreuger:
-    """
-    | Immutable class with all fields intended to be 'Final'
-    |
-    | PEP 591 -- Adding a final qualifier to typing
-    | https://www.python.org/dev/peps/pep-0591/
-    | https://mypy.readthedocs.io/en/stable/final_attrs.html
-    | https://docs.python.org/3/library/typing.html
-    """
-    def __init__(self, gkParameter: _GaussKreugerParameterObject):
-        self._axis: Final[float] = gkParameter._axis
-        self._flattening: Final[float] = gkParameter._flattening
-        self._central_meridian: Final[float] = gkParameter._central_meridian
-        self._scale: Final[float] = gkParameter._scale
-        self._false_northing: Final[float] = gkParameter._false_northing
-        self._false_easting: Final[float] = gkParameter._false_easting
+
+    def __init__(self, gkParameter):
+        self._axis = gkParameter._axis
+        self._flattening = gkParameter._flattening
+        self._central_meridian = gkParameter._central_meridian
+        self._scale = gkParameter._scale
+        self._false_northing = gkParameter._false_northing
+        self._false_easting = gkParameter._false_easting
 
     """
     public static GaussKreuger create(GaussKreugerParameterObject gaussKreugerParameterObject) {
@@ -117,7 +109,7 @@ class _GaussKreuger:
 
     # // Conversion from geodetic coordinates to grid coordinates.
     # public LatLon geodetic_to_grid(double latitude, double longitude) // public double[] geodetic_to_grid(double latitude, double longitude)
-    def geodetic_to_grid(self, latitude: float, longitude: float) -> _LatLon:
+    def geodetic_to_grid(self, latitude, longitude) :  # type: _LatLon
         x_y = [0, 0]
 
         # // Prepare ellipsoid-based stuff.
@@ -168,7 +160,7 @@ class _GaussKreuger:
 
     # // Conversion from grid coordinates to geodetic coordinates.
 
-    def grid_to_geodetic(self, yLatitude: float, xLongitude: float) -> _LatLon:
+    def grid_to_geodetic(self, yLatitude, xLongitude) :  # type: _LatLon
         lat_lon = [0.0, 0.0]
         if (self._central_meridian == sys.float_info.min): # Double.MIN_VALUE
             return _LatLon(lat_lon[0], lat_lon[1])
@@ -218,11 +210,11 @@ class _GaussKreuger:
         return latLon
 
 
-    def _math_sinh(self, value: float) -> float:
+    def _math_sinh(self, value) :  # type: float
         return 0.5 * (math.exp(value) - math.exp(-value))
 
-    def _math_cosh(self, value: float) -> float:
+    def _math_cosh(self, value) :  # type: float
         return 0.5 * (math.exp(value) + math.exp(-value))
 
-    def _math_atanh(self, value: float) -> float:
+    def _math_atanh(self, value) :  # type: float
         return 0.5 * math.log((1.0 + value) / (1.0 - value))

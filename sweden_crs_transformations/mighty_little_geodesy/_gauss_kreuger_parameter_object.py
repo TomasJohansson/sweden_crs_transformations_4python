@@ -26,7 +26,7 @@ class _GaussKreugerParameterObject:
     | are copied into the corresponding readonly fields of the GaussKreuger class.
     """
 
-    def __init__(self, crsProjection: CrsProjection):
+    def __init__(self, crsProjection):
         self._axis = 0                  # Semi-major axis of the ellipsoid.
         self._flattening = 0            # Flattening of the ellipsoid.
         self._central_meridian = 0      # Central meridian for the projection.
@@ -43,7 +43,7 @@ class _GaussKreugerParameterObject:
     | RT90-lat/long based on the Bessel ellipsoide (from old maps).
     | Parameter: projection (string). Must match if-statement.
     """
-    def _swedish_params(self, projection: CrsProjection):
+    def _swedish_params(self, projection):
         # // RT90 parameters, GRS 80 ellipsoid.
         if (projection == CrsProjection.RT90_7_5_GON_V):
             self._grs80_params()

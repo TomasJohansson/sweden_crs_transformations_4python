@@ -20,7 +20,7 @@ class GaussKreugerTest(unittest.TestCase):
         self.gaussKreuger = _GaussKreuger(gaussKreugerParameterObject)
 
     def test_geodetic_to_grid_transforming_from_WGS84_to_SWEREF99TM(self):
-        resultSweref99: _LatLon = self.gaussKreuger.geodetic_to_grid(
+        resultSweref99 = self.gaussKreuger.geodetic_to_grid(
             GaussKreugerTest.stockholmCentralStation_WGS84_latitude,
             GaussKreugerTest.stockholmCentralStation_WGS84_longitude
         )
@@ -32,12 +32,12 @@ class GaussKreugerTest(unittest.TestCase):
         # failure for the above if using 'assertEqual' as above:
         # Expected: 674032
         # Actual: 674032.357
-        delta: float = 0.36 # max diff is around 0.357
+        delta = 0.36 # max diff is around 0.357
         self.assertAlmostEqual(GaussKreugerTest.stockholmCentralStation_SWEREF99TM_northing, resultSweref99.latitude_y, delta=delta)
         self.assertAlmostEqual(GaussKreugerTest.stockholmCentralStation_SWEREF99TM_easting, resultSweref99.longitude_x, delta=delta)
 
     def test_grid_to_geodetic_transforming_from_SWEREF99TM_to_WGS84(self):
-        resultWGS84: _LatLon = self.gaussKreuger.grid_to_geodetic(
+        resultWGS84 = self.gaussKreuger.grid_to_geodetic(
             GaussKreugerTest.stockholmCentralStation_SWEREF99TM_northing,
             GaussKreugerTest.stockholmCentralStation_SWEREF99TM_easting
         )
@@ -49,6 +49,6 @@ class GaussKreugerTest(unittest.TestCase):
         # failure for the above if using 'assertEqual' as above
         # Expected: 18.059196
         # Actual: 18.059189736354668
-        delta: float = 0.000007 # max diff is around 6.26E-6
+        delta = 0.000007 # max diff is around 6.26E-6
         self.assertAlmostEqual(GaussKreugerTest.stockholmCentralStation_WGS84_latitude, resultWGS84.latitude_y, delta=delta)
         self.assertAlmostEqual(GaussKreugerTest.stockholmCentralStation_WGS84_longitude, resultWGS84.longitude_x, delta=delta)

@@ -12,15 +12,15 @@ from sweden_crs_transformations.transformation._transformer import _Transformer
 class TransformStrategyTest(unittest.TestCase):
 
     def setUp(self):
-        self.coordinateWgs84: CrsCoordinate = CrsCoordinate.create_coordinate(CrsProjection.WGS84, 60.0, 20.0)
+        self.coordinateWgs84 = CrsCoordinate.create_coordinate(CrsProjection.WGS84, 60.0, 20.0)
         self.coordinateSweref99 = CrsCoordinate.create_coordinate(CrsProjection.SWEREF_99_TM, 6484098.0, 333538.0)
         self.coordinateRT90 = CrsCoordinate.create_coordinate(CrsProjection.RT90_2_5_GON_V, 6797357.0, 1500627.0)
 
 
     def _assertValueError(self,
-        transformStrategy: _TransformStrategy,
-        sourceCoordinate: CrsCoordinate,
-        targetProjection: CrsProjection
+        transformStrategy,
+        sourceCoordinate,
+        targetProjection
     ):
         with self.assertRaises(ValueError):
             _Transformer._transform_with_explicit_strategy(transformStrategy, sourceCoordinate, targetProjection)

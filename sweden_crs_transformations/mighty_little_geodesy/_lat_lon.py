@@ -17,6 +17,6 @@ class _LatLon:
     | but the class 'GaussKreuger' has later been changed to return this 'LatLon' instead of array 'double[]'
     """
 
-    def __init__(self, latitude_y: float, longitude_x: float):
+    def __init__(self, latitude_y, longitude_x):
         self.latitude_y = latitude_y
         self.longitude_x = longitude_x

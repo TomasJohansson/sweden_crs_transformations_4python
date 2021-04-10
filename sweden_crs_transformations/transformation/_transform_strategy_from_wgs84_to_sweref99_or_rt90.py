@@ -21,10 +21,10 @@ from sweden_crs_transformations.transformation._transform_strategy import _Trans
 class _TransformStrategy_from_WGS84_to_SWEREF99_or_RT90(_TransformStrategy):
     # Precondition: sourceCoordinate must be CRS WGS84, and the target must be CRS SWEREF99 or RT90
     def transform(self,
-                  source_coordinate: CrsCoordinate,
-                  target_crs_projection: CrsProjection
-                  ) -> CrsCoordinate:
-        source_coordinate_projection: CrsProjection = source_coordinate.get_crs_projection()
+                  source_coordinate,
+                  target_crs_projection
+                  ) :  # type: CrsCoordinate
+        source_coordinate_projection = source_coordinate.get_crs_projection()
         if (not (
             (source_coordinate_projection.is_wgs84())
             and
@@ -35,5 +35,5 @@ class _TransformStrategy_from_WGS84_to_SWEREF99_or_RT90(_TransformStrategy):
 
         gaussKreugerParameterObject = _GaussKreugerParameterObject(target_crs_projection)
         gaussKreuger = _GaussKreuger(gaussKreugerParameterObject)
-        lat_lon: _LatLon = gaussKreuger.geodetic_to_grid(source_coordinate.get_latitude_y(), source_coordinate.get_longitude_x())
+        lat_lon = gaussKreuger.geodetic_to_grid(source_coordinate.get_latitude_y(), source_coordinate.get_longitude_x())
         return CrsCoordinate.create_coordinate(target_crs_projection, lat_lon.latitude_y, lat_lon.longitude_x)

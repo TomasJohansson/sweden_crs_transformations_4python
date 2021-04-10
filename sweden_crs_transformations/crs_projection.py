@@ -1,6 +1,4 @@
-﻿from __future__ import annotations # without this the type hint (method annotation) '-> CrsCoordinate:' causes error:  NameError: name 'CrsCoordinate' is not defined
-# from sweden_crs_transformations.crs_coordinate import CrsCoordinate # ImportError ... circular import
-import enum
+﻿import enum
 
 """
 | Copyright (c) Tomas Johansson , http://www.programmerare.com
@@ -78,31 +76,30 @@ class CrsProjection(enum.Enum):
     RT90_2_5_GON_O = 3023
     RT90_5_0_GON_O = 3024
 
-    def get_epsg_number(self) -> int:
+    def get_epsg_number(self) :  # type: int
         # // the EPSG numbers have been used as the values in this enum
         return self.value
 
-    def is_wgs84(self) -> bool:
+    def is_wgs84(self) :  # type: bool
         return self.value == CrsProjection.WGS84.value
 
-    def is_sweref99(self) -> bool:
-        epsg_number: int = self.get_epsg_number()
+    def is_sweref99(self) :  # type: bool
+        epsg_number = self.get_epsg_number()
         return _EpsgConstant._epsgLowerValueForSweref <= epsg_number <= _EpsgConstant._epsgUpperValueForSweref
 
-    def is_rt90(self) -> bool:
-        epsg_number: int = self.get_epsg_number()
+    def is_rt90(self) :  # type: bool
+        epsg_number = self.get_epsg_number()
         return _EpsgConstant._epsgLowerValueForRT90 <= epsg_number <= _EpsgConstant._epsgUpperValueForRT90
 
     def create_coordinate(self,
-                          y_latitude: float,
-                          x_longitude: float
-                          ) -> CrsCoordinate:  # requires 'from __future__ import annotations' at the top of the file
+                          y_latitude,
+                          x_longitude
+                          ) :  # type: CrsCoordinate
         """
         :param y_latitude: the coordinate position value representing the latitude or Y or Northing
         :param x_longitude: the coordinate position value representing the longitude or X or Easting
         :return: a coordinate (CrsCoordinate)
         """
-        # the below 'from ... import' statement can not be at the top of the file since it causes error with circular import
         from sweden_crs_transformations.crs_coordinate import CrsCoordinate
         return CrsCoordinate.create_coordinate(self, y_latitude, x_longitude)
 
@@ -114,7 +111,7 @@ class CrsProjection(enum.Enum):
 
 
     @staticmethod
-    def get_crs_projection_by_epsg_number(epsg_number: int) -> CrsProjection:
+    def get_crs_projection_by_epsg_number(epsg_number) :  # type: CrsProjection
         """
         | Factory method creating an enum 'CrsProjection' by its number (EPSG) value.
         | https://en.wikipedia.org/wiki/EPSG_Geodetic_Parameter_Dataset
@@ -134,7 +131,7 @@ class CrsProjection(enum.Enum):
         raise ValueError("Could not find CrsProjection for EPSG " + str(epsg_number))
 
     @staticmethod
-    def get_all_crs_projections() -> list[CrsProjection]:
+    def get_all_crs_projections() :  # type: list[CrsProjection]
         """
         | Convenience method for retrieving all the projections in a List.
         """

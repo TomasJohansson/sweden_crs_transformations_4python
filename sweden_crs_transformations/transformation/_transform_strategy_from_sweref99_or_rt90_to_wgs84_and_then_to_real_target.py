@@ -17,11 +17,11 @@ from sweden_crs_transformations.transformation._transform_strategy import _Trans
 class _TransFormStrategy_From_Sweref99OrRT90_to_WGS84_andThenToRealTarget(_TransformStrategy):
     # Precondition: sourceCoordinate must be CRS SWEREF99 or RT90, and the target too
     def transform(self,
-                  source_coordinate: CrsCoordinate,
-                  final_target_crs_projection: CrsProjection
-                  ) -> CrsCoordinate:
+                  source_coordinate,
+                  final_target_crs_projection
+                  ) :  # type: CrsCoordinate
         from sweden_crs_transformations.transformation._transformer import _Transformer
-        source_coordinate_projection: CrsProjection = source_coordinate.get_crs_projection()
+        source_coordinate_projection = source_coordinate.get_crs_projection()
         if (not (
             (source_coordinate_projection.is_sweref99() or source_coordinate_projection.is_rt90())
             and

@@ -1,4 +1,4 @@
-﻿from abc import ABC, abstractmethod
+﻿# from abc import ABC, abstractmethod
 from sweden_crs_transformations.crs_coordinate import CrsCoordinate
 from sweden_crs_transformations.crs_projection import CrsProjection
 
@@ -15,10 +15,11 @@ from sweden_crs_transformations.crs_projection import CrsProjection
 """
 
 
-class _TransformStrategy(ABC):
-    @abstractmethod
+# class _TransformStrategy(ABC):
+class _TransformStrategy:
+    # @abstractmethod
     def transform(self,
-                  source_coordinate: CrsCoordinate,
-                  target_crs_projection: CrsProjection
-                  ) -> CrsCoordinate:
+                  source_coordinate,
+                  target_crs_projection
+                  ) :  # type: CrsCoordinate
         pass

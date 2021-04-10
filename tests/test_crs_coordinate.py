@@ -18,18 +18,18 @@ class CrsCoordinateTest(unittest.TestCase):
     stockholmCentralStation_SWEREF99TM_easting = 674032
 
     def test_transform(self):
-        stockholmWGS84: CrsCoordinate = CrsCoordinate.create_coordinate(
+        stockholmWGS84 = CrsCoordinate.create_coordinate(
             CrsProjection.WGS84,
             CrsCoordinateTest.stockholmCentralStation_WGS84_latitude,
             CrsCoordinateTest.stockholmCentralStation_WGS84_longitude
         )
-        stockholmSWEREF99TM: CrsCoordinate = CrsCoordinate.create_coordinate(
+        stockholmSWEREF99TM = CrsCoordinate.create_coordinate(
             CrsProjection.SWEREF_99_TM,
             CrsCoordinateTest.stockholmCentralStation_SWEREF99TM_northing,
             CrsCoordinateTest.stockholmCentralStation_SWEREF99TM_easting
         )
 
-        stockholmRT90: CrsCoordinate = CrsCoordinate.create_coordinate(
+        stockholmRT90 = CrsCoordinate.create_coordinate(
             CrsProjection.RT90_2_5_GON_V,
             CrsCoordinateTest.stockholmCentralStation_RT90_northing,
             CrsCoordinateTest.stockholmCentralStation_RT90_easting
@@ -51,7 +51,7 @@ class CrsCoordinateTest(unittest.TestCase):
 
         # below is a similar test as one of the above tests but using the overloaded Transform method
         # which takes an integer as parameter instead of an instance of the enum CrsProjection
-        epsgNumberForWgs84: int = CrsProjection.WGS84.get_epsg_number()
+        epsgNumberForWgs84 = CrsProjection.WGS84.get_epsg_number()
         self.assertEqualCoordinate(
             stockholmWGS84,
             stockholmRT90.transform_by_epsg_number(epsgNumberForWgs84)  # testing the overloaded Transform method with an integer parameter
@@ -80,7 +80,7 @@ class CrsCoordinateTest(unittest.TestCase):
             stockholmSWEREF99TM.transform(CrsProjection.RT90_2_5_GON_V)  # actual/transformed RT90
         )
 
-    def assertEqualCoordinate(self, crsCoordinate_1: CrsCoordinate, crsCoordinate_2: CrsCoordinate) :
+    def assertEqualCoordinate(self, crsCoordinate_1, crsCoordinate_2) :
         # Python 3.6+
         # messageToDisplayIfAssertionFails = f"crsCoordinate_1: {crsCoordinate_1}  , crsCoordinate_2 : {crsCoordinate_2}"
         # The below works with older Python versions e.g. 2.7
@@ -95,7 +95,7 @@ class CrsCoordinateTest(unittest.TestCase):
     def test_create_coordinate_by_epsg_number(self):
         x = 20.0
         y = 60.0
-        crsCoordinate: CrsCoordinate = CrsCoordinate.create_coordinate_by_epsg_number(CrsProjectionTest.epsgNumberForSweref99tm, y, x)
+        crsCoordinate = CrsCoordinate.create_coordinate_by_epsg_number(CrsProjectionTest.epsgNumberForSweref99tm, y, x)
         self.assertEqual(CrsProjectionTest.epsgNumberForSweref99tm, crsCoordinate.get_crs_projection().get_epsg_number())
         self.assertEqual(x, crsCoordinate.get_longitude_x())
         self.assertEqual(y, crsCoordinate.get_latitude_y())
@@ -104,7 +104,7 @@ class CrsCoordinateTest(unittest.TestCase):
     def test_create_coordinate(self):
         x = 22.5
         y = 62.5
-        crsCoordinate: CrsCoordinate = CrsCoordinate.create_coordinate(CrsProjection.SWEREF_99_TM, y, x)
+        crsCoordinate = CrsCoordinate.create_coordinate(CrsProjection.SWEREF_99_TM, y, x)
         self.assertEqual(CrsProjectionTest.epsgNumberForSweref99tm, crsCoordinate.get_crs_projection().get_epsg_number())
         self.assertEqual(CrsProjection.SWEREF_99_TM, crsCoordinate.get_crs_projection())
         self.assertEqual(x, crsCoordinate.get_longitude_x())
@@ -112,15 +112,15 @@ class CrsCoordinateTest(unittest.TestCase):
 
 
     def test_equality(self):
-        coordinateInstance_1: CrsCoordinate = CrsCoordinate.create_coordinate(CrsProjection.WGS84, CrsCoordinateTest.stockholmCentralStation_WGS84_longitude, CrsCoordinateTest.stockholmCentralStation_WGS84_latitude)
-        coordinateInstance_2: CrsCoordinate = CrsCoordinate.create_coordinate(CrsProjection.WGS84, CrsCoordinateTest.stockholmCentralStation_WGS84_longitude, CrsCoordinateTest.stockholmCentralStation_WGS84_latitude)
+        coordinateInstance_1 = CrsCoordinate.create_coordinate(CrsProjection.WGS84, CrsCoordinateTest.stockholmCentralStation_WGS84_longitude, CrsCoordinateTest.stockholmCentralStation_WGS84_latitude)
+        coordinateInstance_2 = CrsCoordinate.create_coordinate(CrsProjection.WGS84, CrsCoordinateTest.stockholmCentralStation_WGS84_longitude, CrsCoordinateTest.stockholmCentralStation_WGS84_latitude)
         self.assertEqual(coordinateInstance_1, coordinateInstance_2)
         self.assertEqual(hash(coordinateInstance_1), hash(coordinateInstance_2))
         self.assertTrue(coordinateInstance_1 == coordinateInstance_2)
         self.assertTrue(coordinateInstance_2 == coordinateInstance_1)
 
         delta = 0.000000000000001  # see comments further below regarding the value of "delta"
-        coordinateInstance_3: CrsCoordinate = CrsCoordinate.create_coordinate(
+        coordinateInstance_3 = CrsCoordinate.create_coordinate(
             CrsProjection.WGS84,
             CrsCoordinateTest.stockholmCentralStation_WGS84_longitude + delta,
             CrsCoordinateTest.stockholmCentralStation_WGS84_latitude + delta
@@ -140,7 +140,7 @@ class CrsCoordinateTest(unittest.TestCase):
         '''
 
         delta = delta * 10  # moving the decimal one bit to get a somewhat larger values, and then the instances are not considered equal, as you can see in the tests below.
-        coordinateInstance_4: CrsCoordinate = CrsCoordinate.create_coordinate(
+        coordinateInstance_4 = CrsCoordinate.create_coordinate(
             CrsProjection.WGS84,
             CrsCoordinateTest.stockholmCentralStation_WGS84_longitude + delta,
             CrsCoordinateTest.stockholmCentralStation_WGS84_latitude + delta
@@ -153,12 +153,12 @@ class CrsCoordinateTest(unittest.TestCase):
         self.assertIsNot(coordinateInstance_4, coordinateInstance_1)
 
     def test_string(self):
-        coordinate: CrsCoordinate = CrsCoordinate.create_coordinate(CrsProjection.SWEREF_99_18_00, 6579457.649, 153369.673)
+        coordinate = CrsCoordinate.create_coordinate(CrsProjection.SWEREF_99_18_00, 6579457.649, 153369.673)
         self.assertEqual(
             "CrsCoordinate [ Y: 6579457.649 , X: 153369.673 , CRS: SWEREF_99_18_00(EPSG:3011) ]",
             str(coordinate)
         )
-        coordinate2: CrsCoordinate = CrsCoordinate.create_coordinate(CrsProjection.WGS84, 59.330231, 18.059196)
+        coordinate2 = CrsCoordinate.create_coordinate(CrsProjection.WGS84, 59.330231, 18.059196)
         expectedDefaultToStringResultForCoordinate2 = "CrsCoordinate [ Latitude: 59.330231 , Longitude: 18.059196 , CRS: WGS84(EPSG:4326) ]"
         self.assertEqual(
             expectedDefaultToStringResultForCoordinate2 ,
@@ -169,16 +169,19 @@ class CrsCoordinateTest(unittest.TestCase):
     # e.g. verify that this code below works and then it can be paste into some example page at github
     # def test_example(self):
     def example(self):  # rename this method with test_ prefix as in the above row, if/when you want to execute it
-        stockholmWGS84: CrsCoordinate = CrsCoordinate.create_coordinate(
+        stockholmWGS84 = CrsCoordinate.create_coordinate(
             CrsProjection.WGS84,
             CrsCoordinateTest.stockholmCentralStation_WGS84_latitude,
             CrsCoordinateTest.stockholmCentralStation_WGS84_longitude
         )
 
-        stockholmSweref99tm: CrsCoordinate = stockholmWGS84.transform(CrsProjection.SWEREF_99_TM)
-        print(f"stockholmSweref99tm X: {stockholmSweref99tm.get_longitude_x()}")  # Python 3.6+
-        print(f"stockholmSweref99tm Y: {stockholmSweref99tm.get_latitude_y()}")
-        print(f"stockholmSweref99tm as string: {str(stockholmSweref99tm)}")
+        stockholmSweref99tm = stockholmWGS84.transform(CrsProjection.SWEREF_99_TM)
+        # print(f"stockholmSweref99tm X: {stockholmSweref99tm.get_longitude_x()}")  # Python 3.6+
+        # print(f"stockholmSweref99tm Y: {stockholmSweref99tm.get_latitude_y()}")
+        # print(f"stockholmSweref99tm as string: {str(stockholmSweref99tm)}")
+        print("stockholmSweref99tm X: " + str(stockholmSweref99tm.get_longitude_x()))
+        print("stockholmSweref99tm Y: " + str(stockholmSweref99tm.get_latitude_y()))
+        print("stockholmSweref99tm as string: " + str(stockholmSweref99tm))
         '''
         Output from the above:
         stockholmSweref99tm X: 674032.357
