@@ -81,7 +81,11 @@ class CrsCoordinateTest(unittest.TestCase):
         )
 
     def assertEqualCoordinate(self, crsCoordinate_1: CrsCoordinate, crsCoordinate_2: CrsCoordinate) :
-        messageToDisplayIfAssertionFails = f"crsCoordinate_1: {crsCoordinate_1}  , crsCoordinate_2 : {crsCoordinate_2}"
+        # Python 3.6+
+        # messageToDisplayIfAssertionFails = f"crsCoordinate_1: {crsCoordinate_1}  , crsCoordinate_2 : {crsCoordinate_2}"
+        # The below works with older Python versions e.g. 2.7
+        messageToDisplayIfAssertionFails = "crsCoordinate_1: " + str(crsCoordinate_1) + " , crsCoordinate_2 : "  +str(crsCoordinate_2)
+
         self.assertEqual(crsCoordinate_1.get_crs_projection(), crsCoordinate_2.get_crs_projection(), messageToDisplayIfAssertionFails)
         maxDifference = 0.000007 if crsCoordinate_1.get_crs_projection().is_wgs84() else 0.5  # the other (i.e. non-WGS84) value is using meter as unit, so 0.5 is just five decimeters difference
         self.assertAlmostEqual(crsCoordinate_1.get_longitude_x(), crsCoordinate_2.get_longitude_x(), msg=messageToDisplayIfAssertionFails, delta=maxDifference)
@@ -172,7 +176,7 @@ class CrsCoordinateTest(unittest.TestCase):
         )
 
         stockholmSweref99tm: CrsCoordinate = stockholmWGS84.transform(CrsProjection.SWEREF_99_TM)
-        print(f"stockholmSweref99tm X: {stockholmSweref99tm.get_longitude_x()}")
+        print(f"stockholmSweref99tm X: {stockholmSweref99tm.get_longitude_x()}")  # Python 3.6+
         print(f"stockholmSweref99tm Y: {stockholmSweref99tm.get_latitude_y()}")
         print(f"stockholmSweref99tm as string: {str(stockholmSweref99tm)}")
         '''

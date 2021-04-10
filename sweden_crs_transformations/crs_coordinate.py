@@ -115,7 +115,12 @@ class CrsCoordinate:
         if is_wgs84:
             y_or_latitude = "Latitude"
             x_or_longitude = "Longitude"
-        return f"CrsCoordinate [ {y_or_latitude}: {self.get_latitude_y()} , {x_or_longitude}: {self.get_longitude_x()} , CRS: {crs} ]"
+
+        # Python 3.6+
+        # return f"CrsCoordinate [ {y_or_latitude}: {self.get_latitude_y()} , {x_or_longitude}: {self.get_longitude_x()} , CRS: {crs} ]"
+        # The below works with older Python versions e.g. 2.7
+        return "CrsCoordinate [ " + str(y_or_latitude)+ ": " + str(self.get_latitude_y())+ " , " + str(x_or_longitude) + ": " + str(self.get_longitude_x()) + " , CRS: " + str(crs) + " ]"
+
 
     def __hash__(self):
         return hash((self.get_longitude_x(), self.get_latitude_y(), self.get_crs_projection()))

@@ -107,7 +107,11 @@ class CrsProjection(enum.Enum):
         return CrsCoordinate.create_coordinate(self, y_latitude, x_longitude)
 
     def __str__(self):
-        return f"{self.name}(EPSG:{self.get_epsg_number()})"
+        # Python 3.6+
+        # return f"{self.name}(EPSG:{self.get_epsg_number()})"
+        # The below works with older Python versions e.g. 2.7
+        return str(self.name) + "(EPSG:" + str(self.get_epsg_number()) + ")"
+
 
     @staticmethod
     def get_crs_projection_by_epsg_number(epsg_number: int) -> CrsProjection:
@@ -123,7 +127,11 @@ class CrsProjection(enum.Enum):
         for crs in CrsProjection:
             if crs.value == epsg_number:
                 return crs
-        raise ValueError(f"Could not find CrsProjection for EPSG {epsg_number}")
+
+        # Python 3.6+
+        # raise ValueError(f"Could not find CrsProjection for EPSG {epsg_number}")
+        # The below works with older Python versions e.g. 2.7
+        raise ValueError("Could not find CrsProjection for EPSG " + str(epsg_number))
 
     @staticmethod
     def get_all_crs_projections() -> list[CrsProjection]:

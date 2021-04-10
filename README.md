@@ -38,7 +38,7 @@ stockholmWGS84: CrsCoordinate = CrsCoordinate.create_coordinate(
 )
 
 stockholmSweref99tm: CrsCoordinate = stockholmWGS84.transform(CrsProjection.SWEREF_99_TM)
-print(f"stockholmSweref99tm X: {stockholmSweref99tm.get_longitude_x()}")
+print(f"stockholmSweref99tm X: {stockholmSweref99tm.get_longitude_x()}")  # Python 3.6+
 print(f"stockholmSweref99tm Y: {stockholmSweref99tm.get_latitude_y()}")
 print(f"stockholmSweref99tm as string: {str(stockholmSweref99tm)}")
 '''

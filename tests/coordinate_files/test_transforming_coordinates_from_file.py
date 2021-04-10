@@ -112,6 +112,7 @@ class TransformingCoordinatesFromFileTest(unittest.TestCase):
                 "targetCoordinate xLongitude/yLatitude: {targetCoordinate.get_longitude_x()}/{targetCoordinate.get_latitude_y()}"
                 "targetCoordinateExpected xLongitude/yLatitude: {targetCoordinateExpected.get_longitude_x()}/{targetCoordinateExpected.get_latitude_y()}"
             """
+            # problem = "TODO python 2.7"  # no not really needed ... if there is a problem then e.g. python 3.9 can be used for seeing the formatted message with above formatted string
             problemTransformationResults.append(problem)
 
 class Coordinates:

@@ -82,4 +82,7 @@ class _Transformer:
         source_projection: CrsCoordinate,
         target_crs_projection: CrsCoordinate,
     ):
-        raise ValueError(f"Unhandled source/target projection transformation: {source_projection} ==> {target_crs_projection}")
+        # Python 3.6+
+        # raise ValueError(f"Unhandled source/target projection transformation: {source_projection} ==> {target_crs_projection}")
+        # The below works with older Python versions e.g. 2.7
+        raise ValueError("Unhandled source/target projection transformation: " + str(source_projection) + " ==> " + str(target_crs_projection))
