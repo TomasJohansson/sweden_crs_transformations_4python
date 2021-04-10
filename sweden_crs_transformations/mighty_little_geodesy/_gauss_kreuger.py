@@ -121,40 +121,40 @@ class _GaussKreuger:
         x_y = [0, 0]
 
         # // Prepare ellipsoid-based stuff.
-        e2: float = self._flattening * (2.0 - self._flattening)
-        n: float = self._flattening / (2.0 - self._flattening)
-        a_roof: float = self._axis / (1.0 + n) * (1.0 + n * n / 4.0 + n * n * n * n / 64.0)
-        A: float = e2
-        B: float = (5.0 * e2 * e2 - e2 * e2 * e2) / 6.0
-        C: float = (104.0 * e2 * e2 * e2 - 45.0 * e2 * e2 * e2 * e2) / 120.0
-        D: float = (1237.0 * e2 * e2 * e2 * e2) / 1260.0
-        beta1: float = n / 2.0 - 2.0 * n * n / 3.0 + 5.0 * n * n * n / 16.0 + 41.0 * n * n * n * n / 180.0
-        beta2: float = 13.0 * n * n / 48.0 - 3.0 * n * n * n / 5.0 + 557.0 * n * n * n * n / 1440.0
-        beta3: float = 61.0 * n * n * n / 240.0 - 103.0 * n * n * n * n / 140.0
-        beta4: float = 49561.0 * n * n * n * n / 161280.0
+        e2 = self._flattening * (2.0 - self._flattening)
+        n = self._flattening / (2.0 - self._flattening)
+        a_roof = self._axis / (1.0 + n) * (1.0 + n * n / 4.0 + n * n * n * n / 64.0)
+        A = e2
+        B = (5.0 * e2 * e2 - e2 * e2 * e2) / 6.0
+        C = (104.0 * e2 * e2 * e2 - 45.0 * e2 * e2 * e2 * e2) / 120.0
+        D = (1237.0 * e2 * e2 * e2 * e2) / 1260.0
+        beta1 = n / 2.0 - 2.0 * n * n / 3.0 + 5.0 * n * n * n / 16.0 + 41.0 * n * n * n * n / 180.0
+        beta2 = 13.0 * n * n / 48.0 - 3.0 * n * n * n / 5.0 + 557.0 * n * n * n * n / 1440.0
+        beta3 = 61.0 * n * n * n / 240.0 - 103.0 * n * n * n * n / 140.0
+        beta4 = 49561.0 * n * n * n * n / 161280.0
 
         # // Convert.
-        deg_to_rad: float = math.pi / 180.0
-        phi: float = latitude * deg_to_rad
-        lambdaa: float = longitude * deg_to_rad
-        lambda_zero: float = self._central_meridian * deg_to_rad
+        deg_to_rad = math.pi / 180.0
+        phi = latitude * deg_to_rad
+        lambdaa = longitude * deg_to_rad
+        lambda_zero = self._central_meridian * deg_to_rad
 
-        phi_star: float = phi - math.sin(phi) * math.cos(phi) * (A +
+        phi_star = phi - math.sin(phi) * math.cos(phi) * (A +
                         B * math.pow(math.sin(phi), 2) +
                         C * math.pow(math.sin(phi), 4) +
                         D * math.pow(math.sin(phi), 6))
 
-        delta_lambda: float = lambdaa - lambda_zero
-        xi_prim: float = math.atan(math.tan(phi_star) / math.cos(delta_lambda))
-        eta_prim: float = self._math_atanh(math.cos(phi_star) * math.sin(delta_lambda))
+        delta_lambda = lambdaa - lambda_zero
+        xi_prim = math.atan(math.tan(phi_star) / math.cos(delta_lambda))
+        eta_prim = self._math_atanh(math.cos(phi_star) * math.sin(delta_lambda))
 
-        x: float = self._scale * a_roof * (xi_prim +
+        x = self._scale * a_roof * (xi_prim +
                                           beta1 * math.sin(2.0 * xi_prim) * self._math_cosh(2.0 * eta_prim) +
                                           beta2 * math.sin(4.0 * xi_prim) * self._math_cosh(4.0 * eta_prim) +
                                           beta3 * math.sin(6.0 * xi_prim) * self._math_cosh(6.0 * eta_prim) +
                                           beta4 * math.sin(8.0 * xi_prim) * self._math_cosh(8.0 * eta_prim)) + self._false_northing
 
-        y: float = self._scale * a_roof * (eta_prim +
+        y = self._scale * a_roof * (eta_prim +
                                           beta1 * math.cos(2.0 * xi_prim) * self._math_sinh(2.0 * eta_prim) +
                                           beta2 * math.cos(4.0 * xi_prim) * self._math_sinh(4.0 * eta_prim) +
                                           beta3 * math.cos(6.0 * xi_prim) * self._math_sinh(6.0 * eta_prim) +
@@ -173,40 +173,40 @@ class _GaussKreuger:
         if (self._central_meridian == sys.float_info.min): # Double.MIN_VALUE
             return _LatLon(lat_lon[0], lat_lon[1])
         # // Prepare ellipsoid-based stuff.
-        e2: float = self._flattening * (2.0 - self._flattening)
-        n: float = self._flattening / (2.0 - self._flattening)
-        a_roof: float = self._axis / (1.0 + n) * (1.0 + n * n / 4.0 + n * n * n * n / 64.0)
-        delta1: float = n / 2.0 - 2.0 * n * n / 3.0 + 37.0 * n * n * n / 96.0 - n * n * n * n / 360.0
-        delta2: float = n * n / 48.0 + n * n * n / 15.0 - 437.0 * n * n * n * n / 1440.0
-        delta3: float = 17.0 * n * n * n / 480.0 - 37 * n * n * n * n / 840.0
-        delta4: float = 4397.0 * n * n * n * n / 161280.0
+        e2 = self._flattening * (2.0 - self._flattening)
+        n = self._flattening / (2.0 - self._flattening)
+        a_roof = self._axis / (1.0 + n) * (1.0 + n * n / 4.0 + n * n * n * n / 64.0)
+        delta1 = n / 2.0 - 2.0 * n * n / 3.0 + 37.0 * n * n * n / 96.0 - n * n * n * n / 360.0
+        delta2 = n * n / 48.0 + n * n * n / 15.0 - 437.0 * n * n * n * n / 1440.0
+        delta3 = 17.0 * n * n * n / 480.0 - 37 * n * n * n * n / 840.0
+        delta4 = 4397.0 * n * n * n * n / 161280.0
 
-        Astar: float = e2 + e2 * e2 + e2 * e2 * e2 + e2 * e2 * e2 * e2
-        Bstar: float = -(7.0 * e2 * e2 + 17.0 * e2 * e2 * e2 + 30.0 * e2 * e2 * e2 * e2) / 6.0
-        Cstar: float = (224.0 * e2 * e2 * e2 + 889.0 * e2 * e2 * e2 * e2) / 120.0
-        Dstar: float = -(4279.0 * e2 * e2 * e2 * e2) / 1260.0
+        Astar = e2 + e2 * e2 + e2 * e2 * e2 + e2 * e2 * e2 * e2
+        Bstar = -(7.0 * e2 * e2 + 17.0 * e2 * e2 * e2 + 30.0 * e2 * e2 * e2 * e2) / 6.0
+        Cstar = (224.0 * e2 * e2 * e2 + 889.0 * e2 * e2 * e2 * e2) / 120.0
+        Dstar = -(4279.0 * e2 * e2 * e2 * e2) / 1260.0
 
         # // Convert.
-        deg_to_rad: float = math.pi / 180
-        lambda_zero: float = self._central_meridian * deg_to_rad
-        xi: float = (yLatitude - self._false_northing) / (self._scale * a_roof)
-        eta: float = (xLongitude - self._false_easting) / (self._scale * a_roof)
-        xi_prim: float = (xi -
+        deg_to_rad = math.pi / 180
+        lambda_zero = self._central_meridian * deg_to_rad
+        xi = (yLatitude - self._false_northing) / (self._scale * a_roof)
+        eta = (xLongitude - self._false_easting) / (self._scale * a_roof)
+        xi_prim = (xi -
                           delta1 * math.sin(2.0 * xi) * self._math_cosh(2.0 * eta) -
                           delta2 * math.sin(4.0 * xi) * self._math_cosh(4.0 * eta) -
                           delta3 * math.sin(6.0 * xi) * self._math_cosh(6.0 * eta) -
                           delta4 * math.sin(8.0 * xi) * self._math_cosh(8.0 * eta))
 
-        eta_prim: float = (eta -
+        eta_prim = (eta -
                            delta1 * math.cos(2.0 * xi) * self._math_sinh(2.0 * eta) -
                            delta2 * math.cos(4.0 * xi) * self._math_sinh(4.0 * eta) -
                            delta3 * math.cos(6.0 * xi) * self._math_sinh(6.0 * eta) -
                            delta4 * math.cos(8.0 * xi) * self._math_sinh(8.0 * eta))
 
-        phi_star: float = math.asin(math.sin(xi_prim) / self._math_cosh(eta_prim))
-        delta_lambda: float = math.atan(self._math_sinh(eta_prim) / math.cos(xi_prim))
-        lon_radian: float = lambda_zero + delta_lambda
-        lat_radian: float = (phi_star + math.sin(phi_star) * math.cos(phi_star) *
+        phi_star = math.asin(math.sin(xi_prim) / self._math_cosh(eta_prim))
+        delta_lambda = math.atan(self._math_sinh(eta_prim) / math.cos(xi_prim))
+        lon_radian = lambda_zero + delta_lambda
+        lat_radian = (phi_star + math.sin(phi_star) * math.cos(phi_star) *
                         (Astar +
                          Bstar * math.pow(math.sin(phi_star), 2) +
                          Cstar * math.pow(math.sin(phi_star), 4) +
