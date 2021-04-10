@@ -160,3 +160,15 @@ texinfo_documents = [
 
 
 
+# Most of the the above content in this file 'docs/conf.py' was generated initially with 'cookiecutter' (see the first commit of  this git repository)
+# and the below was added later by copying from web page below.
+# ---------------------------------------------------------
+# https://github.com/readthedocs/sphinx-autoapi
+# pip install sphinx-autoapi
+extensions.append('autoapi.extension')
+autoapi_type = 'python'
+autoapi_dirs = ['../sweden_crs_transformations']
+# https://sphinx-autoapi.readthedocs.io/en/latest/tutorials.html
+# cd docs
+# sphinx-build -b html . _build
+# ---------------------------------------------------------
