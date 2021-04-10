@@ -2,7 +2,11 @@
 History
 =======
 
-0.1.0 (2021-04-01)
+1.0.0 (2021-04-10)
 ------------------
+* For Python versions 3.8+
 
-* First release on PyPI.
+
+0.9.0 (2021-04-10)
+------------------
+* For Python versions 2.7 - 3.7
